@@ -1,0 +1,30 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+DEF LOADTARGET () RETURNS NONE {
+    int target = 0x7ffff7995d57 ;
+    reg _r1 = LOAD(target) ;
+}
+
+DEF LOADTARGET () RETURNS NONE {
+    int target = 0x7ffff7995d57 ;
+    reg _r2 = LOAD(target) ;
+}
+
+DEF LOADTARGET () RETURNS NONE {
+    int target = 0x7ffff7995d57 ;
+    reg _r3 = LOAD(target) ;
+}
+
+DEF LOADTARGET () RETURNS NONE {
+    int target = 0x7ffff7995d57 ;
+    reg _r4 = LOAD(target) ;
+}
+
+DEF LOADTARGET () RETURNS NONE {
+    int target = 0x7ffff7995d57 ;
+    reg _r5 = LOAD(target) ;
+}
+
+DISPATCHER {
+    LOADTARGET();
+}

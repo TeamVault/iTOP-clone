@@ -1,0 +1,280 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.esl_lib.lib_utils.gadget_base &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autocoop.esl_lib.lib_utils.gadget_base</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__builtin__</span> <span class="k">import</span> <span class="kc">False</span>
+
+<span class="kn">import</span> <span class="nn">autocoop.esl_lib.lib_utils.candidate_finder</span> <span class="k">as</span> <span class="nn">candidate_finder</span>
+<span class="kn">import</span> <span class="nn">autocoop.esl_lib.lib_utils.solver_utils</span> <span class="k">as</span> <span class="nn">solver_utils</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">autocoop.builder.builder</span> <span class="k">as</span> <span class="nn">builder</span>
+<span class="kn">import</span> <span class="nn">angr</span>
+
+
+<div class="viewcode-block" id="Gadget"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget">[docs]</a><span class="k">class</span> <span class="nc">Gadget</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base represtation of a gadget.</span>
+
+<span class="sd">    :param app: Parent angr project</span>
+<span class="sd">    :param Config config: Config of app</span>
+<span class="sd">    :param autocoop.esl.parser.Gadget gadget_def: IR of gadget</span>
+<span class="sd">    :param list calltarget_list: List of valid calltargets</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;DEFAULT&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">gadget_def</span><span class="p">,</span> <span class="n">calltarget_list</span><span class="o">=</span><span class="nb">list</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gadget_def</span> <span class="o">=</span> <span class="n">gadget_def</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">self_pointer</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">base_buf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbolic_object</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span> <span class="o">=</span> <span class="n">calltarget_list</span>
+
+<div class="viewcode-block" id="Gadget.get_candidates"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.get_candidates">[docs]</a>    <span class="k">def</span> <span class="nf">get_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a list of calltargets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span> <span class="o">=</span> <span class="n">candidate_finder</span><span class="o">.</span><span class="n">get_candidate_gadgets_from_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">other_args</span><span class="p">[</span><span class="s2">&quot;gadget_csv&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Gadget.setup_state"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.setup_state">[docs]</a>    <span class="k">def</span> <span class="nf">setup_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gadget_symbol</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the angr state</span>
+
+<span class="sd">        :param gadget_symbol: Symbol of gadget</span>
+<span class="sd">        :param vtable_addr: Vtable address of gadget</span>
+<span class="sd">        :return: Angr state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">call_state</span><span class="p">(</span><span class="n">gadget_symbol</span><span class="o">.</span><span class="n">rebased_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_pointer</span><span class="p">,</span>
+                                       <span class="n">add_options</span><span class="o">=</span><span class="p">{</span><span class="n">angr</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">ZERO_FILL_UNCONSTRAINED_MEMORY</span><span class="p">,</span>
+                                                    <span class="n">angr</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">INITIALIZE_ZERO_REGISTERS</span><span class="p">},</span> <span class="n">ret_addr</span><span class="o">=</span><span class="mh">0xdeadbeef</span><span class="p">)</span>
+        <span class="n">solver_utils</span><span class="o">.</span><span class="n">ensure_preconditions</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gadget_def</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbolic_object</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">BVS</span><span class="p">(</span><span class="s2">&quot;symbolic_object&quot;</span><span class="p">,</span> <span class="mh">0x60</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">self_pointer</span><span class="o">+</span><span class="mi">8</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbolic_object</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">state</span></div>
+
+<div class="viewcode-block" id="Gadget.simulate"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulates a state until the exit condition is met</span>
+
+<span class="sd">        :param state: State to simulate</span>
+<span class="sd">        :return: List of valid resulting states</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">simgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">simgr</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">simgr</span><span class="o">.</span><span class="n">use_technique</span><span class="p">(</span><span class="n">solver_utils</span><span class="o">.</span><span class="n">CheckUniquenessAndReturn</span><span class="p">())</span>
+        <span class="n">simgr</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;state_return&quot;</span> <span class="ow">in</span> <span class="n">simgr</span><span class="o">.</span><span class="n">stashes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">simgr</span><span class="o">.</span><span class="n">state_return</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Gadget.add_constraints"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.add_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">add_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds constraints to state</span>
+
+<span class="sd">        :param state: State to modify</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Gadget.add_postconditions"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.add_postconditions">[docs]</a>    <span class="k">def</span> <span class="nf">add_postconditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">gadget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds postconditions to state</span>
+
+<span class="sd">        :param state: State to modify</span>
+<span class="sd">        :param int vtable_addr: Vtable addr of gadget</span>
+<span class="sd">        :param gadget: IR of gadget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">solver_utils</span><span class="o">.</span><span class="n">ensure_postconditions</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gadget_def</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Gadget.generate_object"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.generate_object">[docs]</a>    <span class="k">def</span> <span class="nf">generate_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">gadget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates the object to add to the builder</span>
+
+<span class="sd">        :param state: State to get the object from</span>
+<span class="sd">        :param vtable_addr: Vtable addr of gadget</span>
+<span class="sd">        :param gadget: IR of gadget</span>
+<span class="sd">        :return: Gadget address and builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">object_data</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbolic_object</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vtable_addr</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">gadget_obj</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">()</span>
+            <span class="n">gadget_obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">vtable_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">vptr_offset</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gadget_obj</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vFunc</span><span class="o">=</span><span class="n">gadget</span><span class="o">.</span><span class="n">rebased_addr</span><span class="p">,</span> <span class="n">vIndex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">vptr_offset</span><span class="p">)</span>
+        <span class="n">gadget_obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="mh">0x8</span><span class="p">,</span> <span class="n">solver_utils</span><span class="o">.</span><span class="n">int_to_bytes</span><span class="p">(</span><span class="n">object_data</span><span class="p">,</span> <span class="mh">0x60</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;autocoop.esl_lib.gadgets&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;[+] Valid </span><span class="si">{}</span><span class="s2"> gadget found&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">gadget</span><span class="o">.</span><span class="n">rebased_addr</span><span class="p">,</span> <span class="n">gadget_obj</span></div>
+
+<div class="viewcode-block" id="Gadget.valid_object"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.valid_object">[docs]</a>    <span class="k">def</span> <span class="nf">valid_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">gadget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Steps to take after a valid object is found</span>
+
+<span class="sd">        :param state: State after gadget is called</span>
+<span class="sd">        :param vtable_addr: Vtable addr of gadget</span>
+<span class="sd">        :param gadget: IR of gadget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Gadget.search"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches through the candidate set for valid gadgets and generates the gadget objects. This function should</span>
+<span class="sd">        not be modified, instead modify the functions called by search.</span>
+
+<span class="sd">        :yields: Gadget addresses and builder objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_candidates</span><span class="p">()</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">gadget</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;autocoop.esl_lib.gadgets&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;[*] Evaluating potential </span><span class="si">{}</span><span class="s2"> gadget </span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">counter</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">gadget</span><span class="p">))</span>
+
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_state</span><span class="p">(</span><span class="n">gadget</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">)</span>
+            <span class="n">simulation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">resulting_state</span> <span class="ow">in</span> <span class="n">simulation</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_constraints</span><span class="p">(</span><span class="n">resulting_state</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_postconditions</span><span class="p">(</span><span class="n">resulting_state</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">gadget</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">resulting_state</span><span class="o">.</span><span class="n">satisfiable</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">valid_object</span><span class="p">(</span><span class="n">resulting_state</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">gadget</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_object</span><span class="p">(</span><span class="n">resulting_state</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">gadget</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;[-] </span><span class="si">{}</span><span class="s2"> search completed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Gadget.filter_candidate_list"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.filter_candidate_list">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">filter_candidate_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">call</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Further filter the candidate list based on the disassembly</span>
+
+<span class="sd">        :param app: Parent angr project</span>
+<span class="sd">        :param candidates: List of candidates to filter</span>
+<span class="sd">        :param call: The concrete gadget</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">call</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">candidate</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_candidate_gadget</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">candidate</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">call</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">candidate</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_candidate_function</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">candidate</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span></div>
+
+<div class="viewcode-block" id="Gadget.is_candidate_gadget"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.is_candidate_gadget">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_candidate_gadget</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">call</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Semantic filtering based on disassembly, using information that is only known at runtime like register</span>
+<span class="sd">        assignments.</span>
+
+<span class="sd">        :param app: Parent angr project</span>
+<span class="sd">        :param candidate: A candidate gadget</span>
+<span class="sd">        :param call: The concrete gadget</span>
+<span class="sd">        :return: True if gadget is valid gadget for this category</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Gadget.is_candidate_function"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget.is_candidate_function">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_candidate_function</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">candidate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Semantic filtering based on disassembly, using only the gadget category, but no information like</span>
+<span class="sd">        register assignments or concrete variable values.</span>
+
+<span class="sd">        :param app: Parent angr project</span>
+<span class="sd">        :param candidate: A candidate gadget</span>
+<span class="sd">        :return: True if gadget is valid gadget for this category</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

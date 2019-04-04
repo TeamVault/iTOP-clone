@@ -1,0 +1,279 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.builder.test1 &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autocoop.builder.test1</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">builder</span>
+
+<div class="viewcode-block" id="Test_builder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder">[docs]</a><span class="k">class</span> <span class="nc">Test_builder</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="Test_builder.test_Vtable"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder.test_Vtable">[docs]</a>    <span class="k">def</span> <span class="nf">test_Vtable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">vt</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Vtable</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">vt</span><span class="o">.</span><span class="n">addEntry</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">123</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">vt</span><span class="o">.</span><span class="n">addEntry</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">234</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">vt</span><span class="o">.</span><span class="n">addEntry</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">456</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vt</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">()),</span> <span class="mi">3</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Test_builder.test_Memory"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder.test_Memory">[docs]</a>    <span class="k">def</span> <span class="nf">test_Memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">mem</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Memory</span><span class="p">()</span>
+        <span class="n">s0</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mi">12</span>
+        <span class="n">s1</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span><span class="o">*</span><span class="mi">16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">s0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">s1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">s1</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Test_builder.test_Building_0"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder.test_Building_0">[docs]</a>    <span class="k">def</span> <span class="nf">test_Building_0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># create and add objects</span>
+        <span class="n">VENTRY_0</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">VENTRY_1</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="n">LABEL_0</span> <span class="o">=</span> <span class="mi">555</span>
+
+        <span class="n">obj0</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="n">VENTRY_0</span><span class="p">,</span> <span class="mh">0xDEADBEEF</span><span class="p">,</span> <span class="n">builder</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">,</span> <span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">obj1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="n">VENTRY_1</span><span class="p">,</span> <span class="mh">0xBABECAFE</span><span class="p">,</span> <span class="n">builder</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">,</span> <span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj0</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj1</span><span class="p">)</span>
+
+        <span class="c1"># add labeled data such that both objects need to be overlapping.</span>
+        <span class="n">obj0</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="mi">124356</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL_0</span><span class="p">)</span>
+        <span class="n">obj1</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL_0</span><span class="p">)</span>
+
+        <span class="n">b</span><span class="o">.</span><span class="n">_calcOffsets</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+        <span class="c1">## 1) check object offsets</span>
+        <span class="c1"># assert that offset0 - offset1 == 8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+        
+        <span class="n">buffMeta</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">_createMetaBuffer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buffMeta</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="p">(</span><span class="n">VENTRY_0</span> <span class="o">+</span> <span class="n">VENTRY_1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span><span class="p">))</span>
+
+        <span class="n">buffObj</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">_createObjBuffer</span><span class="p">()</span>
+        <span class="c1"># assert that the ouput size is not [obj0] + [obj1] but [obj1] as both objects overlap. (obj0 is completely contained in obj1.)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buffObj</span><span class="p">),</span> <span class="n">obj1</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1">## 2) check label offsets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">lblOffsets</span><span class="p">[</span><span class="n">LABEL_0</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">lblOffsets</span><span class="p">[</span><span class="n">LABEL_0</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Test_builder.test_Building_1"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder.test_Building_1">[docs]</a>    <span class="k">def</span> <span class="nf">test_Building_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BASE</span> <span class="o">=</span> <span class="mh">0xDEADBEEF</span>
+        <span class="n">LABEL_0</span> <span class="o">=</span> <span class="mi">555</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">BASE</span><span class="p">)</span>
+
+        <span class="c1"># create and add objects</span>
+        <span class="n">obj0</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">()</span>
+        <span class="n">obj1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">()</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj0</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj1</span><span class="p">)</span>
+
+        <span class="c1"># add labeled data to obj0 and add a pointer to that data to obj1.</span>
+        <span class="n">obj0</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="mi">124356</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL_0</span><span class="p">)</span>
+        <span class="n">obj1</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL_0</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">b</span><span class="o">.</span><span class="n">_calcOffsets</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+        <span class="n">buffObj</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">_createObjBuffer</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">BASE</span><span class="p">))</span>
+
+        <span class="c1"># read out unresolved pointer</span>
+        <span class="kn">import</span> <span class="nn">struct</span>
+        <span class="n">ptrOffset</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span>
+        <span class="n">ptr</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;Q&quot;</span><span class="p">,</span> <span class="n">buffObj</span><span class="p">[</span><span class="n">ptrOffset</span><span class="p">:</span><span class="n">ptrOffset</span><span class="o">+</span><span class="mi">8</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">BASE</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Test_builder.test_Building_2"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder.test_Building_2">[docs]</a>    <span class="k">def</span> <span class="nf">test_Building_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BASE</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">class</span> <span class="nc">LABEL</span><span class="p">:</span>
+            <span class="n">WINEXEC</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">CMD</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">BASE</span><span class="p">)</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">123456</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x10</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=-</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="c1"># create helper objects that serve as data containers</span>
+        <span class="n">objA</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">objA</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0xDEADBEEF</span><span class="p">)</span>
+        <span class="n">objA</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">objA</span><span class="p">)</span>
+
+        <span class="n">objB</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">objB</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0xDEADBEEF</span><span class="p">)</span>
+        <span class="n">objB</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">CMD</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+        <span class="n">objB</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x38</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s2">&quot;calc.exe&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">CMD</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">objB</span><span class="p">)</span>
+
+        <span class="kn">import</span> <span class="nn">struct</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">_calcOffsets</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+        <span class="n">buff</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">_createObjBuffer</span><span class="p">()</span>
+        <span class="n">obj0Off</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="c1"># get pointer to objA</span>
+        <span class="n">pA</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;Q&quot;</span><span class="p">,</span><span class="n">buff</span><span class="p">[</span><span class="n">obj0Off</span><span class="o">+</span><span class="mh">0x10</span><span class="p">:</span><span class="n">obj0Off</span><span class="o">+</span><span class="mh">0x18</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># check if we have an vptr placeholder there</span>
+        <span class="n">vptrA</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;Q&quot;</span><span class="p">,</span> <span class="n">buff</span><span class="p">[</span><span class="n">pA</span><span class="p">:</span> <span class="n">pA</span><span class="o">+</span><span class="mi">8</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">vptrA</span><span class="p">,</span> <span class="mh">0xDEADBEEF</span><span class="p">)</span>
+
+        <span class="c1"># get pointer to objB</span>
+        <span class="n">pB</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;Q&quot;</span><span class="p">,</span><span class="n">buff</span><span class="p">[</span><span class="n">pA</span><span class="o">+</span><span class="mi">8</span><span class="p">:</span><span class="n">pA</span><span class="o">+</span><span class="mh">0x10</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">vptrB</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;Q&quot;</span><span class="p">,</span> <span class="n">buff</span><span class="p">[</span><span class="n">pB</span><span class="p">:</span> <span class="n">pB</span><span class="o">+</span><span class="mi">8</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">vptrB</span><span class="p">,</span> <span class="mh">0xDEADBEEF</span><span class="p">)</span>
+        <span class="c1"># get pionter to CMD</span>
+        <span class="n">pCmd</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;Q&quot;</span><span class="p">,</span><span class="n">buff</span><span class="p">[</span><span class="n">pB</span><span class="o">+</span><span class="mi">8</span><span class="p">:</span><span class="n">pB</span><span class="o">+</span><span class="mh">0x10</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">buff</span><span class="p">[</span><span class="n">pCmd</span><span class="p">:</span><span class="n">pCmd</span><span class="o">+</span><span class="mi">8</span><span class="p">],</span> <span class="s2">&quot;calc.exe&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Test_builder.test_ArrayBuilder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder.test_ArrayBuilder">[docs]</a>    <span class="k">def</span> <span class="nf">test_ArrayBuilder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">BASE_BUFFER</span> <span class="o">=</span> <span class="mh">0x1000</span>
+        <span class="n">MAX_SIZE</span> <span class="o">=</span> <span class="mh">0x1000</span>
+
+        <span class="n">initObj</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">(</span><span class="n">fixedOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># we want our initObj to reside at offset 0</span>
+        <span class="n">initObj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0x2000</span><span class="p">)</span>
+        <span class="n">initObj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">ArrayBuilder</span><span class="o">.</span><span class="n">LABEL_ARRAY</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">ArrayBuilder</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">,</span> <span class="n">BASE_BUFFER</span><span class="p">,</span> <span class="n">initObj</span><span class="p">)</span>
+        
+        <span class="n">obj0</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">()</span>
+        <span class="n">obj0</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0x3000</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj0</span><span class="p">)</span>
+
+        <span class="n">obj1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">()</span>
+        <span class="n">obj1</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0x4000</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj1</span><span class="p">)</span>
+
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">MAX_SIZE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">initObj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span> <span class="o">+</span> <span class="n">obj0</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span> <span class="o">+</span> <span class="n">obj1</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+
+        <span class="kn">import</span> <span class="nn">struct</span>
+        <span class="c1"># get pointer to array</span>
+        <span class="n">pArray</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;q&quot;</span><span class="p">,</span><span class="n">buffer</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">16</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">pArray</span> <span class="o">&gt;</span> <span class="n">BASE_BUFFER</span> <span class="ow">and</span> <span class="n">pArray</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">BASE_BUFFER</span> <span class="o">+</span> <span class="n">MAX_SIZE</span><span class="p">))</span>
+        <span class="n">offsetArray</span> <span class="o">=</span> <span class="n">pArray</span> <span class="o">-</span> <span class="n">BASE_BUFFER</span>
+        <span class="c1"># does the array contain pointer to objects?</span>
+        <span class="n">offsetObj0</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;q&quot;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">[</span><span class="n">offsetArray</span><span class="p">:</span><span class="n">offsetArray</span><span class="o">+</span><span class="mi">8</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">BASE_BUFFER</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">long</span><span class="p">(</span><span class="n">offsetObj0</span><span class="p">)</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">offsetObj1</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;q&quot;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">[</span><span class="n">offsetArray</span><span class="o">+</span><span class="mi">8</span><span class="p">:</span><span class="n">offsetArray</span><span class="o">+</span><span class="mi">16</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">BASE_BUFFER</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">long</span><span class="p">(</span><span class="n">offsetObj1</span><span class="p">)</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Test_builder.test_LinkedListBuilder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.test1.Test_builder.test_LinkedListBuilder">[docs]</a>    <span class="k">def</span> <span class="nf">test_LinkedListBuilder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BASE_BUFFER</span> <span class="o">=</span> <span class="mh">0x3F00000</span>
+        <span class="n">MAX_SIZE</span> <span class="o">=</span> <span class="mi">1024</span>
+
+        <span class="n">initObj</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">(</span><span class="n">fixedOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># we want our initObj to reside at offset 0</span>
+        <span class="n">initObj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0x2000</span><span class="p">)</span>
+        <span class="n">initObj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">LinkedListBuilder</span><span class="o">.</span><span class="n">LABEL_BASE_LL</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">LinkedListBuilder</span><span class="p">(</span><span class="n">BASE_BUFFER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">initObj</span><span class="p">,</span> <span class="n">builder</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">())</span>
+
+        <span class="c1"># we create a circular linked list</span>
+        <span class="n">obj0</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">()</span>
+        <span class="n">obj0</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0x3000</span><span class="p">)</span>
+        <span class="n">labels0</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj0</span><span class="p">)</span>
+
+        <span class="n">obj1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">()</span>
+        <span class="n">obj1</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0x4000</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj1</span><span class="p">)</span>
+
+        <span class="n">obj2</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">Obj64</span><span class="p">()</span>
+        <span class="n">obj2</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="mh">0x5000</span><span class="p">)</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">labelNextItem</span><span class="o">=</span><span class="n">labels0</span><span class="o">.</span><span class="n">labelObj</span><span class="p">)</span>
+
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">MAX_SIZE</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

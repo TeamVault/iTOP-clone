@@ -1,0 +1,7 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+DISPATCHER {
+    int system = 0x7ffff784e390;
+    int text = 0x7ffff7995d57;
+    EXECUTE_ONE_ARG(system, text);
+}

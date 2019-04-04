@@ -1,0 +1,550 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.esl.parser &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autocoop.esl.parser</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Generate usable objects from an esl payload definition.</span>
+
+<span class="sd">.. moduleauthor:: Richard Viehoever &lt;richard.viehoever@gmail.com&gt;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">autocoop.esl.antlr.eslLexer</span> <span class="k">import</span> <span class="n">eslLexer</span>
+<span class="kn">from</span> <span class="nn">autocoop.esl.antlr.eslParser</span> <span class="k">import</span> <span class="n">eslParser</span>
+<span class="kn">from</span> <span class="nn">autocoop.esl.antlr.eslListener</span> <span class="k">import</span> <span class="n">eslListener</span>
+<span class="kn">from</span> <span class="nn">antlr4</span> <span class="k">import</span> <span class="n">FileStream</span><span class="p">,</span> <span class="n">CommonTokenStream</span><span class="p">,</span> <span class="n">ParseTreeWalker</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="k">import</span> <span class="n">import_module</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+
+<span class="c1"># Add esl standard library to the path</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;/../esl_lib/&quot;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Variable"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Variable">[docs]</a><span class="k">class</span> <span class="nc">Variable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a variable.</span>
+
+<span class="sd">    :param value: value of the Variable</span>
+<span class="sd">    :type value: str or int or None</span>
+<span class="sd">    :param is_ptr: is Variable a pointer?</span>
+<span class="sd">    :type is_ptr: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">is_ptr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_ptr</span> <span class="o">=</span> <span class="n">is_ptr</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check whether two variable&#39;s contents are the same.</span>
+
+<span class="sd">        :param other: Variable to compare to</span>
+<span class="sd">        :type other: Variable</span>
+<span class="sd">        :return: are both Variables equivalent?</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ptr</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">is_ptr</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Variable.as_ptr"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Variable.as_ptr">[docs]</a>    <span class="k">def</span> <span class="nf">as_ptr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return copy of Variable as pointer.</span>
+
+<span class="sd">        :return: pointer Variable</span>
+<span class="sd">        :rtype: Variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Variable.as_literal"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Variable.as_literal">[docs]</a>    <span class="k">def</span> <span class="nf">as_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return Copy of Variable as literal.</span>
+
+<span class="sd">        :return: literal Variable</span>
+<span class="sd">        :rtype: Variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Nicer representation of Variable.</span>
+
+<span class="sd">        :return: representation of Variable</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;ptr&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ptr</span> <span class="k">else</span> <span class="s2">&quot;literal&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Function"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Function">[docs]</a><span class="k">class</span> <span class="nc">Function</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a function (gadget type).</span>
+
+<span class="sd">    :param name: name of function</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param str script: script that defines the function and generates the object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script_name</span> <span class="o">=</span> <span class="n">script</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_script</span><span class="p">(</span><span class="n">script</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Nicer representation of Function.</span>
+
+<span class="sd">        :return: representation of Function</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Function.import_script"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Function.import_script">[docs]</a>    <span class="k">def</span> <span class="nf">import_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Imports a script that contains the gadget definitions.</span>
+
+<span class="sd">        First, an import from the working directory is tried, then from the standard library.</span>
+
+<span class="sd">        :param str script: python script containing the definitions for the gadget</span>
+<span class="sd">        :return: the loaded module</span>
+<span class="sd">        :rtype: module</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">script</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">import_module</span><span class="p">(</span><span class="n">script</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">gadget</span></div>
+
+<div class="viewcode-block" id="Function.function_id"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Function.function_id">[docs]</a>    <span class="k">def</span> <span class="nf">function_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate an ID for the function</span>
+
+<span class="sd">        :return: ID for function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div></div>
+
+<div class="viewcode-block" id="Gadget"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Gadget">[docs]</a><span class="k">class</span> <span class="nc">Gadget</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a full gadget with its args.</span>
+
+<span class="sd">    :param function: gadget type</span>
+<span class="sd">    :type function: Function</span>
+<span class="sd">    :param list[Variable] args: arguments to use gadget with</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postconditions</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Nicer representation of Gadget.</span>
+
+<span class="sd">        :return: representation of Gadget</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="Gadget.gadget_id"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Gadget.gadget_id">[docs]</a>    <span class="k">def</span> <span class="nf">gadget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate an ID for the gadget that encodes function, registers used, and arguments</span>
+
+<span class="sd">        :return: ID for gadget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_r&quot;</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="nb">hash</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_r&quot;</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="nb">hash</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="nb">hash</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">postconditions</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">operand</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="s2">&quot;startswith&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">and</span> <span class="n">operand</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_r&quot;</span><span class="p">):</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="nb">hash</span><span class="p">(</span><span class="n">operand</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="Gadget.add_argument"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Gadget.add_argument">[docs]</a>    <span class="k">def</span> <span class="nf">add_argument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argument</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds an argument to the gadget&#39;s argument list.</span>
+
+<span class="sd">        :param Variable argument: argument to be added</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Gadget.concretize_values"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Gadget.concretize_values">[docs]</a>    <span class="k">def</span> <span class="nf">concretize_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates undefined values based on program state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">assignment</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                        <span class="n">arg</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">assignment</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">arg</span><span class="o">.</span><span class="n">is_ptr</span> <span class="o">=</span> <span class="n">assignment</span><span class="o">.</span><span class="n">is_ptr</span></div></div>
+
+
+<div class="viewcode-block" id="StatementParser"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser">[docs]</a><span class="k">class</span> <span class="nc">StatementParser</span><span class="p">(</span><span class="n">eslListener</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses a statement list</span>
+
+<span class="sd">    :param str name: Name of the statement list</span>
+<span class="sd">    :param list assignments: List of initial variable assignments</span>
+<span class="sd">    :param defaultdict function: List of initial python function definitions</span>
+<span class="sd">    :param defaultdict definitions: List of initial esl function definitions</span>
+<span class="sd">    :param list calls: Initial list of calls</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">assignments</span><span class="p">,</span> <span class="n">functions</span><span class="p">,</span> <span class="n">definitions</span><span class="p">,</span> <span class="n">calls</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StatementParser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span> <span class="o">=</span> <span class="n">assignments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functions</span> <span class="o">=</span> <span class="n">functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span> <span class="o">=</span> <span class="n">definitions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">=</span> <span class="n">calls</span>
+
+<div class="viewcode-block" id="StatementParser.enterAssignment"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser.enterAssignment">[docs]</a>    <span class="k">def</span> <span class="nf">enterAssignment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses assignments.</span>
+
+<span class="sd">        :param eslParser.AssignmentContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">type_hint</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">TYPE</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">ARG_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">type_hint</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ctx</span><span class="o">.</span><span class="n">STRING</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;string_escape&quot;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">type_hint</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
+            <span class="n">integer_as_str</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">INT</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">integer_as_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;0x&quot;</span><span class="p">):</span>
+                <span class="n">integer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">integer_as_str</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">integer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">integer_as_str</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">integer</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Unknown type: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">type_hint</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StatementParser.enterGadget"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser.enterGadget">[docs]</a>    <span class="k">def</span> <span class="nf">enterGadget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses gadget calls.</span>
+
+<span class="sd">        :param eslParser.GadgetContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_function</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">GADGET_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">())</span>
+        <span class="n">gadget</span> <span class="o">=</span> <span class="n">Gadget</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">arguments</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">arguments</span><span class="p">()</span><span class="o">.</span><span class="n">argument</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">argument</span><span class="o">.</span><span class="n">ARG_ID</span><span class="p">():</span>
+                    <span class="n">is_pointer</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&amp;&quot;</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">ARG_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+                    <span class="n">variable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">is_pointer</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&amp;&quot;</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">REG_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+                    <span class="n">variable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">gadget</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">as_ptr</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_pointer</span> <span class="k">else</span> <span class="n">variable</span><span class="o">.</span><span class="n">as_literal</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gadget</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StatementParser.enterReg_assign"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser.enterReg_assign">[docs]</a>    <span class="k">def</span> <span class="nf">enterReg_assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses an assignment to a register.</span>
+
+<span class="sd">        :param eslParser.Reg_assignContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">assignment_target</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">REG_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="n">function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_function</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">GADGET_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">())</span>
+        <span class="n">gadget</span> <span class="o">=</span> <span class="n">Gadget</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">arguments</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">arguments</span><span class="p">()</span><span class="o">.</span><span class="n">argument</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">argument</span><span class="o">.</span><span class="n">ARG_ID</span><span class="p">():</span>
+                    <span class="n">is_pointer</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&amp;&quot;</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">ARG_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+                    <span class="n">variable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">is_pointer</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&amp;&quot;</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">REG_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+                    <span class="n">variable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">gadget</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">as_ptr</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_pointer</span> <span class="k">else</span> <span class="n">variable</span><span class="o">.</span><span class="n">as_literal</span><span class="p">())</span>
+        <span class="n">gadget</span><span class="o">.</span><span class="n">assignments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">assignment_target</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gadget</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StatementParser.enterAssert_stmt"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser.enterAssert_stmt">[docs]</a>    <span class="k">def</span> <span class="nf">enterAssert_stmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses an assert statement.</span>
+
+<span class="sd">        :param eslParser.AssertContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">REG_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="n">cmpop</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">CMP_OP</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">INT</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">postconditions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">reg</span><span class="p">,</span> <span class="n">cmpop</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="StatementParser.get_variable"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the Variable object based on the name.</span>
+
+<span class="sd">        :param str name: the Variable&#39;s name</span>
+<span class="sd">        :return: the desired Variable</span>
+<span class="sd">        :rtype: Variable</span>
+<span class="sd">        :raises: NameError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_r&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">assignment</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">assignment</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Varible </span><span class="si">{}</span><span class="s2"> is unknown&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="StatementParser.add_variable"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser.add_variable">[docs]</a>    <span class="k">def</span> <span class="nf">add_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">contents</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds or updates a Variable in the variables list.</span>
+
+<span class="sd">        :param str name: identifier of the Variable</span>
+<span class="sd">        :param str or int contents: value of the Variable</span>
+<span class="sd">        :return: Variable with requested name and value</span>
+<span class="sd">        :rtype: Variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">assignment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">assignment</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">contents</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+            <span class="n">assignment</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">contents</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">assignment</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">assignment</span></div>
+
+<div class="viewcode-block" id="StatementParser.get_function"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.StatementParser.get_function">[docs]</a>    <span class="k">def</span> <span class="nf">get_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the Function object based on name.</span>
+
+<span class="sd">        :param name: the Function&#39;s name</span>
+<span class="sd">        :return: the desirerd Function</span>
+<span class="sd">        :rtype: Function</span>
+<span class="sd">        :raises: NameError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Function </span><span class="si">{}</span><span class="s2"> is unknown&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="n">eslListener</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Walks the program and generates the required objects.</span>
+
+<span class="sd">    The Parser walks through the tree generated by antlr4 to find and generate the assignments, functions, and the order</span>
+<span class="sd">    of calls for use in the exploit builder.</span>
+
+<span class="sd">    &gt;&gt;&gt; p = Parser(esl)</span>
+<span class="sd">    &gt;&gt;&gt; print p.calls</span>
+<span class="sd">    [&lt;EXECUTE&gt; &lt;system = 140737346069392 (literal)&gt;	&lt;ps = /bin/ps (ptr)&gt;, &lt;EXECUTE&gt; &lt;system = 140737346069392 (literal)&gt;	&lt;shell = /bin/sh (ptr)&gt;]</span>
+
+<span class="sd">    .. warning:: Changing the underlying antlr grammar will not break the Parser, but new features can cause exceptions\</span>
+<span class="sd">    if the parser is not updated. Old .esl files will still be read correctly.</span>
+
+<span class="sd">    :param str target_file: program to load</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_file</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Parser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_gadget</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functions</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_calls</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">input_stream</span> <span class="o">=</span> <span class="n">FileStream</span><span class="p">(</span><span class="n">target_file</span><span class="p">)</span>
+        <span class="n">lexer</span> <span class="o">=</span> <span class="n">eslLexer</span><span class="p">(</span><span class="n">input_stream</span><span class="p">)</span>
+        <span class="n">ctstream</span> <span class="o">=</span> <span class="n">CommonTokenStream</span><span class="p">(</span><span class="n">lexer</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">eslParser</span><span class="p">(</span><span class="n">ctstream</span><span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">esl</span><span class="p">()</span>
+        <span class="n">walker</span> <span class="o">=</span> <span class="n">ParseTreeWalker</span><span class="p">()</span>
+        <span class="n">walker</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Parser.enterEsl_import"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Parser.enterEsl_import">[docs]</a>    <span class="k">def</span> <span class="nf">enterEsl_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses an esl script import</span>
+
+<span class="sd">        :param eslParser.Esl_importContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">STRING</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;string_escape&quot;</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">definitions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Parser.enterMain"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Parser.enterMain">[docs]</a>    <span class="k">def</span> <span class="nf">enterMain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses the mainloop (object dispatch loop)</span>
+
+<span class="sd">        :param eslParser.MainContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_gadget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_function</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">GADGET_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">())</span>
+        <span class="n">mainparser</span> <span class="o">=</span> <span class="n">StatementParser</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">walker</span> <span class="o">=</span> <span class="n">ParseTreeWalker</span><span class="p">()</span>
+        <span class="n">walker</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">mainparser</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_calls</span> <span class="o">=</span> <span class="n">mainparser</span></div>
+
+<div class="viewcode-block" id="Parser.enterDefinition"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Parser.enterDefinition">[docs]</a>    <span class="k">def</span> <span class="nf">enterDefinition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses a function definition</span>
+
+<span class="sd">        :param eslParser.DefinitionContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">GADGET_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">arg_ids</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">arg_ids</span><span class="p">()</span><span class="o">.</span><span class="n">ARG_ID</span><span class="p">():</span>
+                <span class="n">arguments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">argument</span><span class="o">.</span><span class="n">getText</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+        <span class="n">defparser</span> <span class="o">=</span> <span class="n">StatementParser</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arguments</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">walker</span> <span class="o">=</span> <span class="n">ParseTreeWalker</span><span class="p">()</span>
+        <span class="n">walker</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">defparser</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">defparser</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Parser.enterPy_import"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Parser.enterPy_import">[docs]</a>    <span class="k">def</span> <span class="nf">enterPy_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses a python import for a function</span>
+
+<span class="sd">        :param eslParser.Py_importContext ctx: Context in tree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">GADGET_ID</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()</span>
+        <span class="n">script</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">STRING</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;string_escape&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">script</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Parser.get_function"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Parser.get_function">[docs]</a>    <span class="k">def</span> <span class="nf">get_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the Function object based on name.</span>
+
+<span class="sd">        :param name: the Function&#39;s name</span>
+<span class="sd">        :return: the desirerd Function</span>
+<span class="sd">        :rtype: Function</span>
+<span class="sd">        :raises: NameError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Function </span><span class="si">{}</span><span class="s2"> is unknown&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Parser.add_function"><a class="viewcode-back" href="../../../autocoop.esl.html#autocoop.esl.parser.Parser.add_function">[docs]</a>    <span class="k">def</span> <span class="nf">add_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds or updates a function.</span>
+
+<span class="sd">        :param str name: name of the function</span>
+<span class="sd">        :return: Function with requested name</span>
+<span class="sd">        :rtype: Function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">function</span> <span class="o">=</span> <span class="n">Function</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">script</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">function</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="s2">&quot;../../esl_scripts/exploit_demo.esl&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">p</span><span class="o">.</span><span class="n">calls</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

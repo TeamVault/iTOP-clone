@@ -1,0 +1,19 @@
+IMPORT MAINLOOP () RETURNS NONE FROM "mainloop.py" ;
+IMPORT LINKEDLIST () RETURNS NONE FROM "linkedlist.py" ;
+IMPORT RECURSION () RETURNS NONE FROM "loopless.py" ;
+IMPORT READ () RETURNS int FROM "read.py" ;
+IMPORT LOAD (int) RETURNS int FROM "load.py" ;
+IMPORT WRITE (int, int) RETURNS NONE FROM "write.py" ;
+IMPORT EXECUTE (int, int) RETURNS  NONE FROM "execute.py" ;
+IMPORT MANIPULATE (reg) RETURNS NONE FROM "manipulate.py" ;
+IMPORT INC (reg) RETURNS NONE FROM "inc.py" ;
+IMPORT IF_FN () RETURNS NONE FROM "if.py" ;
+IMPORT STACKINC () RETURNS NONE FROM "stackinc.py" ;
+IMPORT STACKDEC () RETURNS NONE FROM "stackdec.py" ;
+
+IMPORT DISPATCHER () RETURNS NONE FROM "linkedlist.py" ;
+IMPORT DISPATCHER () RETURNS NONE FROM "mainloop.py" ;
+IMPORT DISPATCHER () RETURNS NONE FROM "loopless.py" ;
+
+IMPORT "esl_scripts/lib_read.esl";
+IMPORT "esl_scripts/lib_execute.esl";

@@ -1,0 +1,271 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.esl_lib.lib_utils.solver_utils &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autocoop.esl_lib.lib_utils.solver_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">archinfo</span>
+<span class="kn">import</span> <span class="nn">angr</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<div class="viewcode-block" id="ensure_args"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.ensure_args">[docs]</a><span class="k">def</span> <span class="nf">ensure_args</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds constraints to make sure that the values for the arguments have been loaded to the correct registers</span>
+
+<span class="sd">    :param state: state of the app after the gadget has been run. Constraints will be added to this object.</span>
+<span class="sd">    :param list[Variable] args: arguments that have to be loaded</span>
+
+<span class="sd">    .. todo::</span>
+<span class="sd">      Allow for more than one argument to be passed.</span>
+
+<span class="sd">    .. todo::</span>
+<span class="sd">      Different strategies depending on operating system.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+    <span class="n">arg</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">is_ptr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">rdi</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="n">arg</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">rdi</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">value</span><span class="p">))</span> <span class="o">==</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">rdi</span> <span class="o">==</span> <span class="n">arg</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ensure_vptr"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.ensure_vptr">[docs]</a><span class="k">def</span> <span class="nf">ensure_vptr</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">vtable_addr</span><span class="p">,</span> <span class="n">self_ptr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds constraints to check that the vptr points to the correct vtable</span>
+
+<span class="sd">    :param state: state of the app after the gadget has been run. Constaints will be added to this object.</span>
+<span class="sd">    :param int vtable_addr: address of the vtable</span>
+<span class="sd">    :param int self_ptr: address of the start of the object</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">self_ptr</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">endness</span><span class="o">=</span><span class="n">archinfo</span><span class="o">.</span><span class="n">Endness</span><span class="o">.</span><span class="n">LE</span><span class="p">)</span> <span class="o">==</span> <span class="n">vtable_addr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="int_to_bytes"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.int_to_bytes">[docs]</a><span class="k">def</span> <span class="nf">int_to_bytes</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">n_bytes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes a bytestring out of an integer</span>
+
+<span class="sd">    :param int number: integer to be transformed</span>
+<span class="sd">    :param int n_bytes: expected number of bytes, to make sure leading zeroes are generated correctly</span>
+<span class="sd">    :return: bytestring of the integer</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">as_hex</span> <span class="o">=</span> <span class="s2">&quot;{value:0&gt;</span><span class="si">{align}</span><span class="s2">x}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">number</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">n_bytes</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">as_hex</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">as_hex</span><span class="p">),</span> <span class="n">n</span><span class="p">)]</span>
+    <span class="nb">bytearray</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">16</span><span class="p">)),</span> <span class="n">pairs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CheckUniquenessAndFind"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.CheckUniquenessAndFind">[docs]</a><span class="k">class</span> <span class="nc">CheckUniquenessAndFind</span><span class="p">(</span><span class="n">angr</span><span class="o">.</span><span class="n">exploration_techniques</span><span class="o">.</span><span class="n">Explorer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exploration technique for the angr simulation manager that searches for some addresses, avoiding some other</span>
+<span class="sd">    addresses, without visiting the same block twice. The latter condition is to avoid loops.</span>
+
+<span class="sd">    :param list[int] find: find these addresses</span>
+<span class="sd">    :param list[int] avoid: avoid these addresses</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CheckUniquenessAndFind</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_blocks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CheckUniquenessAndFind.filter"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.CheckUniquenessAndFind.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simgr</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_blocks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;too_many_blocks&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CheckUniquenessAndFind</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">simgr</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;timeout&quot;</span>
+        <span class="n">ip</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">rip</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_blocks</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;not_unique_block&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_blocks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+<div class="viewcode-block" id="CheckUniquenessAndReturn"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.CheckUniquenessAndReturn">[docs]</a><span class="k">class</span> <span class="nc">CheckUniquenessAndReturn</span><span class="p">(</span><span class="n">angr</span><span class="o">.</span><span class="n">ExplorationTechnique</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exploration technique for angr simulation manager that searches for a return from the starting function, without</span>
+<span class="sd">    visiting the same block twice.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CheckUniquenessAndReturn</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_blocks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CheckUniquenessAndReturn.filter"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.CheckUniquenessAndReturn.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simgr</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">ip</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">rip</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_blocks</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;not_unique_block&quot;</span>
+        <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">jumpkind</span> <span class="o">==</span> <span class="s2">&quot;Ijk_Call&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;call&quot;</span>
+        <span class="k">if</span> <span class="n">ip</span> <span class="o">==</span> <span class="mh">0x0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">jumpkind</span> <span class="o">!=</span> <span class="s2">&quot;Ijk_Ret&quot;</span> <span class="ow">and</span> <span class="n">state</span><span class="o">.</span><span class="n">jumpkind</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;jump_to_zero&quot;</span>
+        <span class="k">if</span> <span class="n">ip</span> <span class="o">==</span> <span class="mh">0xdeadbeef</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">jumpkind</span> <span class="o">==</span> <span class="s2">&quot;Ijk_Ret&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;state_return&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_blocks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="resolve_reg"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.resolve_reg">[docs]</a><span class="k">def</span> <span class="nf">resolve_reg</span><span class="p">(</span><span class="n">register</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Changes a platform independant register id (_r1, _r2, ...) into a platform specific one (rdi, rsi, ...)</span>
+
+<span class="sd">    :param str register: register to translate</span>
+<span class="sd">    :return: platform specific register id</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    .. todo::</span>
+<span class="sd">      Support for platforms other than Linux 64 bit</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">param_regs_linux</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rdi&quot;</span><span class="p">,</span> <span class="s2">&quot;rsi&quot;</span><span class="p">,</span> <span class="s2">&quot;rdx&quot;</span><span class="p">,</span> <span class="s2">&quot;rcx&quot;</span><span class="p">,</span> <span class="s2">&quot;r8&quot;</span><span class="p">,</span> <span class="s2">&quot;r9&quot;</span><span class="p">]</span>
+    <span class="n">register_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">register</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">param_regs_linux</span><span class="p">[</span><span class="n">register_number</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="alternatives"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.alternatives">[docs]</a><span class="k">def</span> <span class="nf">alternatives</span><span class="p">(</span><span class="n">register</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets different length names for the same register (rdi, esi, si)</span>
+
+<span class="sd">    :param register:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;rdi&quot;</span><span class="p">,</span> <span class="s2">&quot;edi&quot;</span><span class="p">,</span> <span class="s2">&quot;di&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;rsi&quot;</span><span class="p">,</span> <span class="s2">&quot;esi&quot;</span><span class="p">,</span> <span class="s2">&quot;si&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;rdx&quot;</span><span class="p">,</span> <span class="s2">&quot;edx&quot;</span><span class="p">,</span> <span class="s2">&quot;dx&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;rcx&quot;</span><span class="p">,</span> <span class="s2">&quot;ecx&quot;</span><span class="p">,</span> <span class="s2">&quot;cx&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;r8&quot;</span><span class="p">,</span> <span class="s2">&quot;r8d&quot;</span><span class="p">,</span> <span class="s2">&quot;r8w&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;r9&quot;</span><span class="p">,</span> <span class="s2">&quot;r9d&quot;</span><span class="p">,</span> <span class="s2">&quot;r9w&quot;</span><span class="p">}</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">alternatives</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">register</span> <span class="ow">in</span> <span class="n">alternative</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">alternative</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">register</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ensure_postconditions"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.ensure_postconditions">[docs]</a><span class="k">def</span> <span class="nf">ensure_postconditions</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">gadget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensures that all asserts following the gadget asserts are true.</span>
+
+<span class="sd">    :param state: state to add conditions to</span>
+<span class="sd">    :param gadget: gadget to ensure postconditions of</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">reg</span><span class="p">,</span> <span class="n">cmpop</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">gadget</span><span class="o">.</span><span class="n">postconditions</span><span class="p">:</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">resolve_reg</span><span class="p">(</span><span class="n">reg</span><span class="p">))</span>
+        <span class="n">cmpops</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;==&quot;</span><span class="p">:</span> <span class="n">reg</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">,</span>
+            <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="n">reg</span><span class="o">.</span><span class="fm">__gt__</span><span class="p">,</span>
+            <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">reg</span><span class="o">.</span><span class="fm">__lt__</span>
+        <span class="p">}</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cmpops</span><span class="p">[</span><span class="n">cmpop</span><span class="p">](</span><span class="n">value</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ensure_preconditions"><a class="viewcode-back" href="../../../../autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.solver_utils.ensure_preconditions">[docs]</a><span class="k">def</span> <span class="nf">ensure_preconditions</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">gadget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensures that all preconditions (register and memory assignments) are met</span>
+
+<span class="sd">    :param state: state to add conditions to</span>
+<span class="sd">    :param gadget: gadget to ensure preconditions of</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="n">gadget</span><span class="o">.</span><span class="n">assignments</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">assignment</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_r&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">assignment</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">resolve_reg</span><span class="p">(</span><span class="n">assignment</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">assignment</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,9 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+DISPATCHER {
+    int initial = 0x100;
+    READ_INTO_R1(initial);
+    READ_INTO_R2(initial);
+    MANIPULATE();
+    ASSERT _r1 == 0x200;
+}

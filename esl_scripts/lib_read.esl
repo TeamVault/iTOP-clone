@@ -1,0 +1,54 @@
+DEF READ_INTO_R1 (value) RETURNS NONE {
+    reg _r1 = READ() ;
+    ASSERT _r1 == value ;
+}
+
+DEF READ_INTO_R1(value) RETURNS NONE {
+    reg _r1 = READ();
+    MANIPULATE(_r1);
+    ASSERT _r1 == value;
+}
+
+DEF READ_INTO_R2 (value) RETURNS NONE {
+    reg _r2 = READ() ;
+    ASSERT _r2 == value ;
+}
+
+DEF READ_INTO_R2(value) RETURNS NONE {
+    reg _r2 = READ();
+    MANIPULATE(_r2);
+    ASSERT _r2 == value;
+}
+
+DEF READ_INTO_R3 (value) RETURNS NONE {
+    reg _r3 = READ() ;
+    ASSERT _r3 == value ;
+}
+
+DEF READ_INTO_R3(value) RETURNS NONE {
+    reg _r3 = READ();
+    MANIPULATE(_r3);
+    ASSERT _r3 == value;
+}
+
+DEF READ_INTO_R4 (value) RETURNS NONE {
+    reg _r4 = READ() ;
+    ASSERT _r4 == value ;
+}
+
+DEF READ_INTO_R4(value) RETURNS NONE {
+    reg _r4 = READ();
+    MANIPULATE(_r4);
+    ASSERT _r4 == value;
+}
+
+DEF READ_INTO_R5 (value) RETURNS NONE {
+    reg _r5 = READ() ;
+    ASSERT _r5 == value ;
+}
+
+DEF READ_INTO_R5(value) RETURNS NONE {
+    reg _r5 = READ();
+    MANIPULATE(_r5);
+    ASSERT _r5 == value;
+}

@@ -1,0 +1,5 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+DISPATCHER {
+    STACKDEC();
+}

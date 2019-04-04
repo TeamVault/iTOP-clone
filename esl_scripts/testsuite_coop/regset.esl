@@ -1,0 +1,6 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+DISPATCHER {
+    int value = 0xbeef;
+    READ_INTO_R1(value);
+}

@@ -1,0 +1,7 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+LINKEDLIST {
+_start:
+    reg _r1 = READ();
+    GOTO _start;
+}

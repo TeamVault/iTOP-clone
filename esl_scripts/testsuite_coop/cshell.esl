@@ -1,0 +1,10 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+LINKEDLIST {
+    int system = 0x7ffff784e390;
+    int text = 0x7ffff7995d57;
+    IF _r1 == 0x603010 GOTO _end;
+    EXECUTE_ONE_ARG(system, text);
+_end:
+    _r1 = LOAD();
+}

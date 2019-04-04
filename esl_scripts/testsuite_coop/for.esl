@@ -1,0 +1,12 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+LINKEDLIST {
+    int value = 0x1 ;
+    READ_INTO_R1(value) ;
+_loop:
+    INC(_r1) ;
+    IF _r1 > 0x10 GOTO _end ;
+    GOTO _loop ;
+_end:
+    READ_INTO_R1(value);
+}

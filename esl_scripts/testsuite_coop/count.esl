@@ -1,0 +1,16 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+LINKEDLIST {
+    int printf = 0x7ffff785e800;
+    string text = "%d %d\n";
+    int storageaddr = 0xa0000000;
+    int value = 0x1 ;
+    READ_INTO_R2(value) ;
+_loop:
+    EXECUTE_ONE_ARG(printf, &text);
+    INC(_r2) ;
+    IF _r2 == 0x10 GOTO _end ;
+    GOTO _loop ;
+_end:
+    reg _r1 = READ();
+}

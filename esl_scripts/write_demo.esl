@@ -1,0 +1,8 @@
+IMPORT WRITE (int, int) RETURNS NONE FROM "write.py" ;
+IMPORT "esl_scripts/lib_coop.esl";
+
+MAINLOOP {
+    int target = 0xa0000100 ;
+    int value = 0xdeadbeef ;
+    WRITE(target, value) ;
+}

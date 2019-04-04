@@ -1,0 +1,13 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+LINKEDLIST {
+    int value = 0x1 ;
+    READ_INTO_R1(value) ;
+    READ_INTO_R2(value) ;
+    ASSERT _r1 == 0x1;
+_loop:
+    ADD(_r1, _r2) ;
+    GOTO _loop ;
+_end:
+    READ_INTO_R1(value);
+}

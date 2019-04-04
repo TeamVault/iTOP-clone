@@ -1,0 +1,10 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+LINKEDLIST {
+    int target = 0xa0000100;
+    int value = 0xbeef;
+    IF _r1 < 0x603010 GOTO _end ;
+    WRITE(target, value);
+_end:
+    reg _r1 = READ();
+}

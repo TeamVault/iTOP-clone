@@ -1,0 +1,31 @@
+IMPORT EXECUTE (int, int) RETURNS NONE FROM "execute.py";
+IMPORT READ () RETURNS int FROM "read.py";
+IMPORT MANIPULATE (reg) RETURNS NONE FROM "manipulate.py";
+
+
+DEF SYSTEM(arg) RETURNS NONE {
+    int system = 0x7ffff784e390;
+    EXECUTE(system, arg);
+}
+
+DEF SYSTEM(arg) RETURNS NONE {
+    reg _r1 = READ();
+    ASSERT _r1 == 0x7ffff784e390;
+    EXECUTE(_r1, arg);
+}
+
+
+// DEF SYSTEM(arg) RETURNS NONE {
+//     reg _r1 = READ();
+//     MANIPULATE(_r1);
+//     ASSERT _r1 == 0x7ffff784e390;
+//     EXECUTE(_r1, arg);
+// }
+
+// DEF SYSTEM_BINSH () RETURNS NONE {
+//    reg _r1 = READ();
+//    MANIPULATE(_r1);
+//    ASSERT _r1 == 0x7ffff7995d57;
+//    int system = 0x7ffff784e390;
+//    EXECUTE(system, _r1);
+// }

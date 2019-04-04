@@ -1,0 +1,690 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.builder package &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="autocoop.esl package" href="autocoop.esl.html" />
+    <link rel="prev" title="autocoop package" href="autocoop.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="autocoop-builder-package">
+<h1>autocoop.builder package<a class="headerlink" href="#autocoop-builder-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-autocoop.builder.builder">
+<span id="autocoop-builder-builder-module"></span><h2>autocoop.builder.builder module<a class="headerlink" href="#module-autocoop.builder.builder" title="Permalink to this headline">¶</a></h2>
+<p>Builder for COOP attack codes.
+Author: flxflx / <a class="reference external" href="mailto:felix&#46;schuster&#37;&#52;&#48;rub&#46;de">felix<span>&#46;</span>schuster<span>&#64;</span>rub<span>&#46;</span>de</a></p>
+<dl class="class">
+<dt id="autocoop.builder.builder.Arch">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Arch</code><a class="reference internal" href="_modules/autocoop/builder/builder.html#Arch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Arch" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="class">
+<dt id="autocoop.builder.builder.Arch.X64">
+<em class="property">class </em><code class="descname">X64</code><a class="reference internal" href="_modules/autocoop/builder/builder.html#Arch.X64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Arch.X64" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="autocoop.builder.builder.Arch.X64.packNativeInt">
+<em class="property">static </em><code class="descname">packNativeInt</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Arch.X64.packNativeInt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Arch.X64.packNativeInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.builder.Arch.X64.sizeNativeInt">
+<code class="descname">sizeNativeInt</code><em class="property"> = 8</em><a class="headerlink" href="#autocoop.builder.builder.Arch.X64.sizeNativeInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Arch.X86">
+<em class="property">class </em><code class="descname">X86</code><a class="reference internal" href="_modules/autocoop/builder/builder.html#Arch.X86"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Arch.X86" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="autocoop.builder.builder.Arch.X86.packNativeInt">
+<em class="property">static </em><code class="descname">packNativeInt</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Arch.X86.packNativeInt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Arch.X86.packNativeInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.builder.Arch.X86.sizeNativeInt">
+<code class="descname">sizeNativeInt</code><em class="property"> = 4</em><a class="headerlink" href="#autocoop.builder.builder.Arch.X86.sizeNativeInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.ArrayBuilder">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">ArrayBuilder</code><span class="sig-paren">(</span><em>arch</em>, <em>baseBuff</em>, <em>mainObj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#ArrayBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.ArrayBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#autocoop.builder.builder.BaseBuilder" title="autocoop.builder.builder.BaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.builder.builder.BaseBuilder</span></code></a></p>
+<p>Builder for array-based ML-Gs.
+The array starts at label LABEL_ARRAY.</p>
+<dl class="attribute">
+<dt id="autocoop.builder.builder.ArrayBuilder.LABEL_ARRAY">
+<code class="descname">LABEL_ARRAY</code><em class="property"> = 99</em><a class="headerlink" href="#autocoop.builder.builder.ArrayBuilder.LABEL_ARRAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.ArrayBuilder.addObj">
+<code class="descname">addObj</code><span class="sig-paren">(</span><em>obj</em>, <em>inPtrArray=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#ArrayBuilder.addObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.ArrayBuilder.addObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an object.
+&#64;param obj the object to add
+&#64;param inPtrArray if false, the object is not put into the array. (All regular objects should be put into the array.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.ArrayBuilder.finalize">
+<code class="descname">finalize</code><span class="sig-paren">(</span><em>maxOffset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#ArrayBuilder.finalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.ArrayBuilder.finalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.BaseBuilder">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">BaseBuilder</code><span class="sig-paren">(</span><em>baseBuff</em>, <em>arch=&lt;class autocoop.builder.builder.X64&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#BaseBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.BaseBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="autocoop.builder.builder.BaseBuilder.addObj">
+<code class="descname">addObj</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#BaseBuilder.addObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.BaseBuilder.addObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add object; returns the objects id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.BaseBuilder.finalize">
+<code class="descname">finalize</code><span class="sig-paren">(</span><em>maxSize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#BaseBuilder.finalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.BaseBuilder.finalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the final buffer.
+&#64;param maxSize the maximum size of the final buffer. Setting a small size may result in unsatisfiable constraints.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.BaseBuilder.getLastObjectId">
+<code class="descname">getLastObjectId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#BaseBuilder.getLastObjectId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.BaseBuilder.getLastObjectId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the id of the very last object in line.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.BaseBuilder.itObjects">
+<code class="descname">itObjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#BaseBuilder.itObjects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.BaseBuilder.itObjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Builder">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Builder</code><span class="sig-paren">(</span><em>baseBuff</em>, <em>arch=&lt;class autocoop.builder.builder.X64&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Builder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Builder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#autocoop.builder.builder.BaseBuilder" title="autocoop.builder.builder.BaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.builder.builder.BaseBuilder</span></code></a></p>
+<p>DEPRECATED example builder used in x64 exploits. 
+Assumes that object pointer array is travsersed in loop gadget.
+The object pointer array is put at the very beginning of the created buffer.</p>
+<dl class="method">
+<dt id="autocoop.builder.builder.Builder.finalize">
+<code class="descname">finalize</code><span class="sig-paren">(</span><em>maxOffset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Builder.finalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Builder.finalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="autocoop.builder.builder.ExpUnsat">
+<em class="property">exception </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">ExpUnsat</code><a class="reference internal" href="_modules/autocoop/builder/builder.html#ExpUnsat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.ExpUnsat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.LinkedListBuilder">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">LinkedListBuilder</code><span class="sig-paren">(</span><em>baseBuff</em>, <em>offsetPtrObj</em>, <em>offsetPtrNext</em>, <em>mainObj</em>, <em>arch</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#LinkedListBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.LinkedListBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#autocoop.builder.builder.BaseBuilder" title="autocoop.builder.builder.BaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.builder.builder.BaseBuilder</span></code></a></p>
+<p>Builder for linked list-based ML-Gs.
+The first linked list item is labeled with LABEL_BASE_LL. The first object is labeled with LABEL_BASE_OBJ.
+Use LABEL_BASE_LL to put a pointer to the first linked list item into your initial object.</p>
+<dl class="attribute">
+<dt id="autocoop.builder.builder.LinkedListBuilder.LABEL_BASE_LL">
+<code class="descname">LABEL_BASE_LL</code><em class="property"> = 101</em><a class="headerlink" href="#autocoop.builder.builder.LinkedListBuilder.LABEL_BASE_LL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.builder.LinkedListBuilder.LABEL_BASE_OBJ">
+<code class="descname">LABEL_BASE_OBJ</code><em class="property"> = 100</em><a class="headerlink" href="#autocoop.builder.builder.LinkedListBuilder.LABEL_BASE_OBJ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.LinkedListBuilder.ObjLabels">
+<em class="property">class </em><code class="descname">ObjLabels</code><span class="sig-paren">(</span><em>labelObj</em>, <em>labelLlItem</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#LinkedListBuilder.ObjLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.LinkedListBuilder.ObjLabels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.LinkedListBuilder.addObj">
+<code class="descname">addObj</code><span class="sig-paren">(</span><em>obj</em>, <em>linkedList=True</em>, <em>labelNextItem=None</em>, <em>labelItem=None</em>, <em>lastObj=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#LinkedListBuilder.addObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.LinkedListBuilder.addObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an object.
+&#64;param obj the object to add
+&#64;param linkedList if false, the object is not put into the linked list. (All regular objects should be put into the linked list.)
+&#64;param labelNextItem [optional] the label of the next item.
+&#64;param labelItem [optinal] the label of the current item.
+&#64;param lastObj [IMPORTANT] is this the last object?</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.LooplessBuilder">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">LooplessBuilder</code><span class="sig-paren">(</span><em>arch</em>, <em>baseBuff</em>, <em>vindexFirst</em>, <em>ptrVtableRecGadget</em>, <em>descriptors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#LooplessBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.LooplessBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#autocoop.builder.builder.BaseBuilder" title="autocoop.builder.builder.BaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.builder.builder.BaseBuilder</span></code></a></p>
+<p>Builder for COOP code that does not rely on a conventional ML-G but on a REC-G.
+An example for a REC-G is the following virtual destructor:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">X</span> <span class="p">{</span>
+    <span class="n">A</span><span class="o">*</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// class A has a virtual destructor</span>
+    <span class="n">B</span><span class="o">*</span> <span class="n">b</span><span class="p">;</span> <span class="c1">// class B has a virtual destructor</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">X</span><span class="o">::~</span><span class="n">X</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">a</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>With “delete a;” the actual vfgadget is invoked, with “delete b;” X::~X() is invoked recursively.</p>
+<dl class="class">
+<dt id="autocoop.builder.builder.LooplessBuilder.InvocationDescriptor">
+<em class="property">class </em><code class="descname">InvocationDescriptor</code><span class="sig-paren">(</span><em>vindex</em>, <em>offsetThisPtr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#LooplessBuilder.InvocationDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.LooplessBuilder.InvocationDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes an invocation location in the REC-G. E.g., X::~X() has two invocation locations:
+a: vindex=&lt;vtable index of A::~A()&gt;, offsetThisPtr=8
+b: vindex=&lt;vtable index of B::~B()&gt;, offsetThisPtr=16</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.builder.LooplessBuilder.LABEL_FIRST_OBJ">
+<code class="descname">LABEL_FIRST_OBJ</code><em class="property"> = 100</em><a class="headerlink" href="#autocoop.builder.builder.LooplessBuilder.LABEL_FIRST_OBJ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.LooplessBuilder.addObj">
+<code class="descname">addObj</code><span class="sig-paren">(</span><em>obj</em>, <em>ptrVtable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#LooplessBuilder.addObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.LooplessBuilder.addObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an object.
+&#64;param obj the object to add.
+&#64;param ptrVtable address of a vtable entry of the vfgadget to use.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Memory">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Memory</code><span class="sig-paren">(</span><em>arch=&lt;class autocoop.builder.builder.X64&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="autocoop.builder.builder.Memory.FILL_CHAR">
+<code class="descname">FILL_CHAR</code><em class="property"> = '$'</em><a class="headerlink" href="#autocoop.builder.builder.Memory.FILL_CHAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Memory.Pointer">
+<em class="property">class </em><code class="descname">Pointer</code><span class="sig-paren">(</span><em>offset</em>, <em>size</em>, <em>targetLabel</em>, <em>targetOffset=0</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.Pointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.Pointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.builder.builder.Region</span></code></p>
+<p>Placeholder for a pointer to a certain label.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Memory.Region">
+<em class="property">class </em><code class="descname">Region</code><span class="sig-paren">(</span><em>offset</em>, <em>data=None</em>, <em>size=None</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.Region"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.Region" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="autocoop.builder.builder.Memory.Region.conflicts">
+<code class="descname">conflicts</code><span class="sig-paren">(</span><em>offset</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.Region.conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.Region.conflicts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.Region.setData">
+<code class="descname">setData</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.Region.setData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.Region.setData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addByte">
+<code class="descname">addByte</code><span class="sig-paren">(</span><em>offset</em>, <em>byte=None</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addByte"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addByte" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addData">
+<code class="descname">addData</code><span class="sig-paren">(</span><em>offset</em>, <em>data</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a data region to the object (convenience method). 
+&#64;param offset Offset from the beginning of the object in bytes.
+&#64;param data The data to add.
+&#64;param label A unique global label for the data.
+&#64;returns True on success.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addDword">
+<code class="descname">addDword</code><span class="sig-paren">(</span><em>offset</em>, <em>dword=None</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addDword"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addDword" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addLabel">
+<code class="descname">addLabel</code><span class="sig-paren">(</span><em>offset</em>, <em>size</em>, <em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a label at a certain offset. 
+&#64;param offset The offset of the region to label.
+&#64;param size The size of the region to label.
+&#64;param The identifier of the label (typically an integer).
+&#64;returns True on success.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addPointer">
+<code class="descname">addPointer</code><span class="sig-paren">(</span><em>offset</em>, <em>value</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addPointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addPointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an absolute pointer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addQword">
+<code class="descname">addQword</code><span class="sig-paren">(</span><em>offset</em>, <em>qword=None</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addQword"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addQword" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addRegion">
+<code class="descname">addRegion</code><span class="sig-paren">(</span><em>region</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addRegion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addUnresolvedPointer">
+<code class="descname">addUnresolvedPointer</code><span class="sig-paren">(</span><em>offset</em>, <em>targetLabel</em>, <em>targetOffset=0</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addUnresolvedPointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addUnresolvedPointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a placeholder for a pointer to a certain label. 
+Example:
+if your gadget has the following semantics: “dword ptr [dword ptr [ecx+10h]+28h] =&gt; 5”
+then chossing offset=0x10, targetOffset=-0x28 and label=XYZ would write the value 5 to the address labeld XYZ.</p>
+<p>&#64;param offset Offset from the beginning of the object in bytes.
+&#64;param targetLabel The label the yet to-be-resolved pointer should point to.
+&#64;paran targetOffset [optional] The offset from the target label the yet to-be-resolved pointer should point to.
+&#64;param label [optional] A unique global label for this pointer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.addWord">
+<code class="descname">addWord</code><span class="sig-paren">(</span><em>offset</em>, <em>word=None</em>, <em>label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.addWord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.addWord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.findOffsetForRegion">
+<code class="descname">findOffsetForRegion</code><span class="sig-paren">(</span><em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.findOffsetForRegion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.findOffsetForRegion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.getBuffer">
+<code class="descname">getBuffer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.getBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.getBuffer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.getMaxOffset">
+<code class="descname">getMaxOffset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.getMaxOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.getMaxOffset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.getSize">
+<code class="descname">getSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.getSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.getSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.invalidate">
+<code class="descname">invalidate</code><span class="sig-paren">(</span><em>offset</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.invalidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.invalidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.isRangeFree">
+<code class="descname">isRangeFree</code><span class="sig-paren">(</span><em>offset</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.isRangeFree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.isRangeFree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.itPointers">
+<code class="descname">itPointers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.itPointers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.itPointers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.itRegions">
+<code class="descname">itRegions</code><span class="sig-paren">(</span><em>dataOnly=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.itRegions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.itRegions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Memory.resolvePointers">
+<code class="descname">resolvePointers</code><span class="sig-paren">(</span><em>lblOffsets</em>, <em>relocator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Memory.resolvePointers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Memory.resolvePointers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves all pointers. 
+&#64;param lblOffsets Dictionary containing offsets of labels.
+&#64;param relocator Relocator for offsets of labels.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Obj32">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Obj32</code><span class="sig-paren">(</span><em>fixedOffset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Obj32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Obj32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#autocoop.builder.builder.Object" title="autocoop.builder.builder.Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.builder.builder.Object</span></code></a></p>
+<p>Convenience wrapper, same as Object but has arch=Arch.X86 and noFakeVtable=True fixed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Obj64">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Obj64</code><span class="sig-paren">(</span><em>fixedOffset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Obj64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Obj64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#autocoop.builder.builder.Object" title="autocoop.builder.builder.Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.builder.builder.Object</span></code></a></p>
+<p>Convenience wrapper, same as Object but has arch=Arch.X64 and noFakeVtable=True fixed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Object">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Object</code><span class="sig-paren">(</span><em>vIndex=None</em>, <em>vFunc=None</em>, <em>arch=&lt;class autocoop.builder.builder.X64&gt;</em>, <em>noFakeVtable=True</em>, <em>fixedOffset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes a fake object that consists at least of a vptr.</p>
+<dl class="method">
+<dt id="autocoop.builder.builder.Object.setLabel">
+<code class="descname">setLabel</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Object.setLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Object.setLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a label to the object if not one is already present.
+Returns the effective label.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Object.setVptr">
+<code class="descname">setVptr</code><span class="sig-paren">(</span><em>ptrPtrVfunc</em>, <em>index=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Object.setVptr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Object.setVptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the vptr of the object.
+&#64;param ptrPtrVfunc pointer to pointer to vfunc of interest
+&#64;param index [optional] the index the vfunc should have in the vftable</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Relocator">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Relocator</code><span class="sig-paren">(</span><em>base0</em>, <em>base1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Relocator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Relocator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="autocoop.builder.builder.Relocator.ptr">
+<code class="descname">ptr</code><span class="sig-paren">(</span><em>ptr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Relocator.ptr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Relocator.ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="autocoop.builder.builder.Vtable">
+<em class="property">class </em><code class="descclassname">autocoop.builder.builder.</code><code class="descname">Vtable</code><span class="sig-paren">(</span><em>arch=&lt;class autocoop.builder.builder.X64&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Vtable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Vtable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes a fake vtable.</p>
+<dl class="method">
+<dt id="autocoop.builder.builder.Vtable.addEntry">
+<code class="descname">addEntry</code><span class="sig-paren">(</span><em>index</em>, <em>func</em>, <em>sanitize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Vtable.addEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Vtable.addEntry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Vtable.getBuffer">
+<code class="descname">getBuffer</code><span class="sig-paren">(</span><em>fillChar='$'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Vtable.getBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Vtable.getBuffer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.builder.Vtable.getSize">
+<code class="descname">getSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/builder.html#Vtable.getSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.builder.Vtable.getSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.builder.exp_chrome64_0">
+<span id="autocoop-builder-exp-chrome64-0-module"></span><h2>autocoop.builder.exp_chrome64_0 module<a class="headerlink" href="#module-autocoop.builder.exp_chrome64_0" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autocoop.builder.exp_chrome64_0.LABEL">
+<em class="property">class </em><code class="descclassname">autocoop.builder.exp_chrome64_0.</code><code class="descname">LABEL</code><a class="reference internal" href="_modules/autocoop/builder/exp_chrome64_0.html#LABEL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_chrome64_0.LABEL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="autocoop.builder.exp_chrome64_0.LABEL.PTR_ABORT">
+<code class="descname">PTR_ABORT</code><em class="property"> = 0</em><a class="headerlink" href="#autocoop.builder.exp_chrome64_0.LABEL.PTR_ABORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_chrome64_0.LABEL.PTR_SYSTEM">
+<code class="descname">PTR_SYSTEM</code><em class="property"> = 1</em><a class="headerlink" href="#autocoop.builder.exp_chrome64_0.LABEL.PTR_SYSTEM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_chrome64_0.LABEL.STR_BIN_SH">
+<code class="descname">STR_BIN_SH</code><em class="property"> = 2</em><a class="headerlink" href="#autocoop.builder.exp_chrome64_0.LABEL.STR_BIN_SH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="autocoop.builder.exp_chrome64_0.build">
+<code class="descclassname">autocoop.builder.exp_chrome64_0.</code><code class="descname">build</code><span class="sig-paren">(</span><em>baseChrome</em>, <em>baseBuff</em>, <em>maxOffset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/exp_chrome64_0.html#build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_chrome64_0.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invokes system(‘bin/sh’).
+&#64;param baseChrome Base address of the chrome binary. 
+&#64;param r relocator for the chrome binary.
+&#64;param baseBuff Base address of buffer under control.
+&#64;param maxOffset Size of buffer under control.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.builder.exp_chrome64_1">
+<span id="autocoop-builder-exp-chrome64-1-module"></span><h2>autocoop.builder.exp_chrome64_1 module<a class="headerlink" href="#module-autocoop.builder.exp_chrome64_1" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autocoop.builder.exp_chrome64_1.LABEL">
+<em class="property">class </em><code class="descclassname">autocoop.builder.exp_chrome64_1.</code><code class="descname">LABEL</code><a class="reference internal" href="_modules/autocoop/builder/exp_chrome64_1.html#LABEL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_chrome64_1.LABEL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="autocoop.builder.exp_chrome64_1.LABEL.PTR_ABORT">
+<code class="descname">PTR_ABORT</code><em class="property"> = 0</em><a class="headerlink" href="#autocoop.builder.exp_chrome64_1.LABEL.PTR_ABORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_chrome64_1.LABEL.PTR_SYSTEM">
+<code class="descname">PTR_SYSTEM</code><em class="property"> = 1</em><a class="headerlink" href="#autocoop.builder.exp_chrome64_1.LABEL.PTR_SYSTEM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_chrome64_1.LABEL.STR_BIN_SH">
+<code class="descname">STR_BIN_SH</code><em class="property"> = 2</em><a class="headerlink" href="#autocoop.builder.exp_chrome64_1.LABEL.STR_BIN_SH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="autocoop.builder.exp_chrome64_1.build">
+<code class="descclassname">autocoop.builder.exp_chrome64_1.</code><code class="descname">build</code><span class="sig-paren">(</span><em>baseChrome</em>, <em>baseBuff</em>, <em>maxOffset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/exp_chrome64_1.html#build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_chrome64_1.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates loopless COOP code for Chrome that invokes system(‘bin/sh’). 
+Loopless COOP code recursively invokes a REC-G and does not require an ML-G.
+&#64;param baseChrome Base address of the chrome binary.
+&#64;param baseBuff Base address of buffer under control.
+&#64;param maxOffset Size of buffer under control.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.builder.exp_mshtml_dummy_32">
+<span id="autocoop-builder-exp-mshtml-dummy-32-module"></span><h2>autocoop.builder.exp_mshtml_dummy_32 module<a class="headerlink" href="#module-autocoop.builder.exp_mshtml_dummy_32" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.LABEL">
+<em class="property">class </em><code class="descclassname">autocoop.builder.exp_mshtml_dummy_32.</code><code class="descname">LABEL</code><a class="reference internal" href="_modules/autocoop/builder/exp_mshtml_dummy_32.html#LABEL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.LABEL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.LABEL.A">
+<code class="descname">A</code><em class="property"> = 2</em><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.LABEL.A" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.LABEL.B">
+<code class="descname">B</code><em class="property"> = 3</em><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.LABEL.B" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.LABEL.COUNTER_OVERFLOW">
+<code class="descname">COUNTER_OVERFLOW</code><em class="property"> = 4</em><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.LABEL.COUNTER_OVERFLOW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.LABEL.ITEM_END_OF_LOOP">
+<code class="descname">ITEM_END_OF_LOOP</code><em class="property"> = 5</em><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.LABEL.ITEM_END_OF_LOOP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.LABEL.LINKED_LIST">
+<code class="descname">LINKED_LIST</code><em class="property"> = 1</em><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.LABEL.LINKED_LIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.LABEL.MAIN_ARG">
+<code class="descname">MAIN_ARG</code><em class="property"> = 0</em><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.LABEL.MAIN_ARG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="autocoop.builder.exp_mshtml_dummy_32.build">
+<code class="descclassname">autocoop.builder.exp_mshtml_dummy_32.</code><code class="descname">build</code><span class="sig-paren">(</span><em>r</em>, <em>baseBuff</em>, <em>maxOffset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/exp_mshtml_dummy_32.html#build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_32.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invokes WinExec(‘calc.exe’, &lt;something&gt;) 
+&#64;param r Dictionary containing relocatrors for various dlls.
+&#64;param baseBuff Base address of buffer under control.
+&#64;param maxOffset Size of buffer under control.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.builder.exp_mshtml_dummy_64">
+<span id="autocoop-builder-exp-mshtml-dummy-64-module"></span><h2>autocoop.builder.exp_mshtml_dummy_64 module<a class="headerlink" href="#module-autocoop.builder.exp_mshtml_dummy_64" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="autocoop.builder.exp_mshtml_dummy_64.exp0">
+<code class="descclassname">autocoop.builder.exp_mshtml_dummy_64.</code><code class="descname">exp0</code><span class="sig-paren">(</span><em>r</em>, <em>baseBuff</em>, <em>maxOffset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/exp_mshtml_dummy_64.html#exp0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_64.exp0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invokes <code class="code docutils literal notranslate"><span class="pre">VirtualProtect(this,</span> <span class="pre">*,</span> <span class="pre">*,</span> <span class="pre">*)</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="autocoop.builder.exp_mshtml_dummy_64.exp1">
+<code class="descclassname">autocoop.builder.exp_mshtml_dummy_64.</code><code class="descname">exp1</code><span class="sig-paren">(</span><em>baseMod</em>, <em>baseBuff</em>, <em>maxOffset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/exp_mshtml_dummy_64.html#exp1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.exp_mshtml_dummy_64.exp1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invokes WinExec(‘calc.exe’, &lt;something&gt;)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.builder.test1">
+<span id="autocoop-builder-test1-module"></span><h2>autocoop.builder.test1 module<a class="headerlink" href="#module-autocoop.builder.test1" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autocoop.builder.test1.Test_builder">
+<em class="property">class </em><code class="descclassname">autocoop.builder.test1.</code><code class="descname">Test_builder</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="autocoop.builder.test1.Test_builder.test_ArrayBuilder">
+<code class="descname">test_ArrayBuilder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder.test_ArrayBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder.test_ArrayBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.test1.Test_builder.test_Building_0">
+<code class="descname">test_Building_0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder.test_Building_0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder.test_Building_0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.test1.Test_builder.test_Building_1">
+<code class="descname">test_Building_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder.test_Building_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder.test_Building_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.test1.Test_builder.test_Building_2">
+<code class="descname">test_Building_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder.test_Building_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder.test_Building_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.test1.Test_builder.test_LinkedListBuilder">
+<code class="descname">test_LinkedListBuilder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder.test_LinkedListBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder.test_LinkedListBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.test1.Test_builder.test_Memory">
+<code class="descname">test_Memory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder.test_Memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder.test_Memory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.builder.test1.Test_builder.test_Vtable">
+<code class="descname">test_Vtable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/builder/test1.html#Test_builder.test_Vtable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.builder.test1.Test_builder.test_Vtable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.builder">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-autocoop.builder" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Packages</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="autocoop.html">autocoop package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">autocoop</a><ul>
+  <li><a href="autocoop.html">autocoop package</a><ul>
+      <li>Previous: <a href="autocoop.html" title="previous chapter">autocoop package</a></li>
+      <li>Next: <a href="autocoop.esl.html" title="next chapter">autocoop.esl package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/autocoop.builder.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

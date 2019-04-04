@@ -1,0 +1,9 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+MAINLOOP {
+    int printf = 0x7ffff785e800;
+    reg _r1 = READ();
+    MANIPULATE(_r1);
+    ASSERT _r1 == 0x7ffff7995d57;
+    EXECUTE(printf, _r1);
+} // testsuite_coop/printf.esl

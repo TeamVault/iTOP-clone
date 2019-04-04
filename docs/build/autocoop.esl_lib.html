@@ -1,0 +1,496 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>autocoop.esl_lib package &#8212; Auto-COOP  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="autocoop.esl_lib.lib_utils package" href="autocoop.esl_lib.lib_utils.html" />
+    <link rel="prev" title="autocoop.esl.antlr package" href="autocoop.esl.antlr.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="autocoop-esl-lib-package">
+<h1>autocoop.esl_lib package<a class="headerlink" href="#autocoop-esl-lib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autocoop.esl_lib.lib_utils.html">autocoop.esl_lib.lib_utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl_lib.lib_utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl_lib.lib_utils.html#module-autocoop.esl_lib.lib_utils.candidate_finder">autocoop.esl_lib.lib_utils.candidate_finder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl_lib.lib_utils.html#module-autocoop.esl_lib.lib_utils.capstone_utils">autocoop.esl_lib.lib_utils.capstone_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl_lib.lib_utils.html#module-autocoop.esl_lib.lib_utils.gadget_base">autocoop.esl_lib.lib_utils.gadget_base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl_lib.lib_utils.html#module-autocoop.esl_lib.lib_utils.solver_utils">autocoop.esl_lib.lib_utils.solver_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autocoop.esl_lib.lib_utils.html#module-autocoop.esl_lib.lib_utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-autocoop.esl_lib.execute">
+<span id="autocoop-esl-lib-execute-module"></span><h2>autocoop.esl_lib.execute module<a class="headerlink" href="#module-autocoop.esl_lib.execute" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autocoop.esl_lib.execute.Execute">
+<em class="property">class </em><code class="descclassname">autocoop.esl_lib.execute.</code><code class="descname">Execute</code><span class="sig-paren">(</span><em>app</em>, <em>config</em>, <em>gadget_def</em>, <em>calltarget_list=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/execute.html#Execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.execute.Execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget" title="autocoop.esl_lib.lib_utils.gadget_base.Gadget"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl_lib.lib_utils.gadget_base.Gadget</span></code></a></p>
+<dl class="method">
+<dt id="autocoop.esl_lib.execute.Execute.add_constraints">
+<code class="descname">add_constraints</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/execute.html#Execute.add_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.execute.Execute.add_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds constraints to state</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> – State to modify</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl_lib.execute.Execute.add_postconditions">
+<code class="descname">add_postconditions</code><span class="sig-paren">(</span><em>state</em>, <em>vtable_addr</em>, <em>gadget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/execute.html#Execute.add_postconditions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.execute.Execute.add_postconditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds postconditions to state</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>state</strong> – State to modify</li>
+<li><strong>vtable_addr</strong> (<em>int</em>) – Vtable addr of gadget</li>
+<li><strong>gadget</strong> – IR of gadget</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="autocoop.esl_lib.execute.Execute.is_candidate_function">
+<em class="property">classmethod </em><code class="descname">is_candidate_function</code><span class="sig-paren">(</span><em>app</em>, <em>candidate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/execute.html#Execute.is_candidate_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.execute.Execute.is_candidate_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semantic filtering based on disassembly, using only the gadget category, but no information like
+register assignments or concrete variable values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> – Parent angr project</li>
+<li><strong>candidate</strong> – A candidate gadget</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if gadget is valid gadget for this category</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="autocoop.esl_lib.execute.Execute.is_candidate_gadget">
+<em class="property">classmethod </em><code class="descname">is_candidate_gadget</code><span class="sig-paren">(</span><em>app</em>, <em>candidate</em>, <em>call</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/execute.html#Execute.is_candidate_gadget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.execute.Execute.is_candidate_gadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semantic filtering based on disassembly, using information that is only known at runtime like register
+assignments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> – Parent angr project</li>
+<li><strong>candidate</strong> – A candidate gadget</li>
+<li><strong>call</strong> – The concrete gadget</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if gadget is valid gadget for this category</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.esl_lib.execute.Execute.name">
+<code class="descname">name</code><em class="property"> = 'EXECUTE'</em><a class="headerlink" href="#autocoop.esl_lib.execute.Execute.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl_lib.execute.Execute.simulate">
+<code class="descname">simulate</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/execute.html#Execute.simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.execute.Execute.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates a state until the exit condition is met</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> – State to simulate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of valid resulting states</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.esl_lib.execute.gadget">
+<code class="descclassname">autocoop.esl_lib.execute.</code><code class="descname">gadget</code><a class="headerlink" href="#autocoop.esl_lib.execute.gadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#autocoop.esl_lib.execute.Execute" title="autocoop.esl_lib.execute.Execute"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl_lib.execute.Execute</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.esl_lib.mainloop">
+<span id="autocoop-esl-lib-mainloop-module"></span><h2>autocoop.esl_lib.mainloop module<a class="headerlink" href="#module-autocoop.esl_lib.mainloop" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="autocoop.esl_lib.mainloop.generate_main">
+<code class="descclassname">autocoop.esl_lib.mainloop.</code><code class="descname">generate_main</code><span class="sig-paren">(</span><em>app</em>, <em>config</em>, <em>calltargets_order</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/mainloop.html#generate_main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.mainloop.generate_main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the object dispatch loop gadget and the array builder.</p>
+<p>The the offsets for the object array ptr and the object array length are generated by stepping though the
+disassembled code, from the virtual function call/the loop exit condition, tracking the relevant registers until
+the offset is found.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> (<em>angr.Project</em>) – application the gadget will be found for</li>
+<li><strong>config</strong> (<a class="reference internal" href="autocoop.html#autocoop.exploit_generator.Config" title="autocoop.exploit_generator.Config"><em>Config</em></a>) – configuration of the exploit generator</li>
+<li><strong>calltargets_order</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – list of calltargets in the order they are called in</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Array builder object ready for more objects to be added and vptr offset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="autocoop.esl_lib.mainloop.update_main">
+<code class="descclassname">autocoop.esl_lib.mainloop.</code><code class="descname">update_main</code><span class="sig-paren">(</span><em>array_builder</em>, <em>calltargets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/mainloop.html#update_main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.mainloop.update_main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds objects to array builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>array_builder</strong> – Array builder to add objects to</li>
+<li><strong>calltargets</strong> (<em>list</em>) – list of calltargets and builder objects</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.esl_lib.manipulate">
+<span id="autocoop-esl-lib-manipulate-module"></span><h2>autocoop.esl_lib.manipulate module<a class="headerlink" href="#module-autocoop.esl_lib.manipulate" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autocoop.esl_lib.manipulate.Manipulate">
+<em class="property">class </em><code class="descclassname">autocoop.esl_lib.manipulate.</code><code class="descname">Manipulate</code><span class="sig-paren">(</span><em>app</em>, <em>config</em>, <em>gadget_def</em>, <em>calltarget_list=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/manipulate.html#Manipulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.manipulate.Manipulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget" title="autocoop.esl_lib.lib_utils.gadget_base.Gadget"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl_lib.lib_utils.gadget_base.Gadget</span></code></a></p>
+<dl class="classmethod">
+<dt id="autocoop.esl_lib.manipulate.Manipulate.is_candidate_function">
+<em class="property">classmethod </em><code class="descname">is_candidate_function</code><span class="sig-paren">(</span><em>app</em>, <em>candidate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/manipulate.html#Manipulate.is_candidate_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.manipulate.Manipulate.is_candidate_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semantic filtering based on disassembly, using only the gadget category, but no information like
+register assignments or concrete variable values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> – Parent angr project</li>
+<li><strong>candidate</strong> – A candidate gadget</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if gadget is valid gadget for this category</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="autocoop.esl_lib.manipulate.Manipulate.is_candidate_gadget">
+<em class="property">classmethod </em><code class="descname">is_candidate_gadget</code><span class="sig-paren">(</span><em>app</em>, <em>candidate</em>, <em>call</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/manipulate.html#Manipulate.is_candidate_gadget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.manipulate.Manipulate.is_candidate_gadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semantic filtering based on disassembly, using information that is only known at runtime like register
+assignments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> – Parent angr project</li>
+<li><strong>candidate</strong> – A candidate gadget</li>
+<li><strong>call</strong> – The concrete gadget</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if gadget is valid gadget for this category</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.esl_lib.manipulate.Manipulate.name">
+<code class="descname">name</code><em class="property"> = 'MANIPULATE'</em><a class="headerlink" href="#autocoop.esl_lib.manipulate.Manipulate.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl_lib.manipulate.Manipulate.valid_object">
+<code class="descname">valid_object</code><span class="sig-paren">(</span><em>state</em>, <em>vtable_addr</em>, <em>gadget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/manipulate.html#Manipulate.valid_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.manipulate.Manipulate.valid_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Steps to take after a valid object is found</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>state</strong> – State after gadget is called</li>
+<li><strong>vtable_addr</strong> – Vtable addr of gadget</li>
+<li><strong>gadget</strong> – IR of gadget</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.esl_lib.manipulate.gadget">
+<code class="descclassname">autocoop.esl_lib.manipulate.</code><code class="descname">gadget</code><a class="headerlink" href="#autocoop.esl_lib.manipulate.gadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#autocoop.esl_lib.manipulate.Manipulate" title="autocoop.esl_lib.manipulate.Manipulate"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl_lib.manipulate.Manipulate</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.esl_lib.read">
+<span id="autocoop-esl-lib-read-module"></span><h2>autocoop.esl_lib.read module<a class="headerlink" href="#module-autocoop.esl_lib.read" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="autocoop.esl_lib.read.Read">
+<em class="property">class </em><code class="descclassname">autocoop.esl_lib.read.</code><code class="descname">Read</code><span class="sig-paren">(</span><em>app</em>, <em>config</em>, <em>gadget_def</em>, <em>calltarget_list=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/read.html#Read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.read.Read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="autocoop.esl_lib.lib_utils.html#autocoop.esl_lib.lib_utils.gadget_base.Gadget" title="autocoop.esl_lib.lib_utils.gadget_base.Gadget"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl_lib.lib_utils.gadget_base.Gadget</span></code></a></p>
+<dl class="method">
+<dt id="autocoop.esl_lib.read.Read.add_constraints">
+<code class="descname">add_constraints</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/read.html#Read.add_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.read.Read.add_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds constraints to state</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> – State to modify</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="autocoop.esl_lib.read.Read.is_candidate_function">
+<em class="property">classmethod </em><code class="descname">is_candidate_function</code><span class="sig-paren">(</span><em>app</em>, <em>candidate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/read.html#Read.is_candidate_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.read.Read.is_candidate_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semantic filtering based on disassembly, using only the gadget category, but no information like
+register assignments or concrete variable values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> – Parent angr project</li>
+<li><strong>candidate</strong> – A candidate gadget</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if gadget is valid gadget for this category</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="autocoop.esl_lib.read.Read.is_candidate_gadget">
+<em class="property">classmethod </em><code class="descname">is_candidate_gadget</code><span class="sig-paren">(</span><em>app</em>, <em>candidate</em>, <em>call</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/read.html#Read.is_candidate_gadget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.read.Read.is_candidate_gadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semantic filtering based on disassembly, using information that is only known at runtime like register
+assignments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> – Parent angr project</li>
+<li><strong>candidate</strong> – A candidate gadget</li>
+<li><strong>call</strong> – The concrete gadget</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if gadget is valid gadget for this category</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.esl_lib.read.Read.name">
+<code class="descname">name</code><em class="property"> = 'READ'</em><a class="headerlink" href="#autocoop.esl_lib.read.Read.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="autocoop.esl_lib.read.Read.valid_object">
+<code class="descname">valid_object</code><span class="sig-paren">(</span><em>state</em>, <em>vtable_addr</em>, <em>gadget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/autocoop/esl_lib/read.html#Read.valid_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#autocoop.esl_lib.read.Read.valid_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Steps to take after a valid object is found</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>state</strong> – State after gadget is called</li>
+<li><strong>vtable_addr</strong> – Vtable addr of gadget</li>
+<li><strong>gadget</strong> – IR of gadget</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="autocoop.esl_lib.read.gadget">
+<code class="descclassname">autocoop.esl_lib.read.</code><code class="descname">gadget</code><a class="headerlink" href="#autocoop.esl_lib.read.gadget" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#autocoop.esl_lib.read.Read" title="autocoop.esl_lib.read.Read"><code class="xref py py-class docutils literal notranslate"><span class="pre">autocoop.esl_lib.read.Read</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-autocoop.esl_lib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-autocoop.esl_lib" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Auto-COOP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#running-auto-coop">Running Auto-COOP</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Packages</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="autocoop.html">autocoop package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">autocoop</a><ul>
+  <li><a href="autocoop.html">autocoop package</a><ul>
+      <li>Previous: <a href="autocoop.esl.antlr.html" title="previous chapter">autocoop.esl.antlr package</a></li>
+      <li>Next: <a href="autocoop.esl_lib.lib_utils.html" title="next chapter">autocoop.esl_lib.lib_utils package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Richard Viehoever.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/autocoop.esl_lib.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,7 @@
+IMPORT "esl_scripts/lib_coop.esl";
+
+DISPATCHER {
+    int target = 0xa0000100;
+    int value = 0xbeef;
+    WRITE(target, value);
+}
