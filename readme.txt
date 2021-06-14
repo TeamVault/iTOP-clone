@@ -1,7 +1,7 @@
 Installation
 ============
 
-To run jTOP (Auto-COOP), you need a python2 or pypy environment with angr and antlr4-python2-runtime installed. We recommend creating a python virtual environment. The steps to set one up with the proper packages are outlined below.
+To run iTOP, you need a python2 or pypy environment with angr and antlr4-python2-runtime installed. We recommend creating a python virtual environment. The steps to set one up with the proper packages are outlined below.
 
 1. create python2 virtualenv using virtualenv, virtualenvwrapper, conda, pipenv, or similar::
 
@@ -17,10 +17,10 @@ To run jTOP (Auto-COOP), you need a python2 or pypy environment with angr and an
     export PYTHONPATH=.:$PYTHONPATH
 
 
-Running jTOP
+Running iTOP
 =================
 
-To generate a payload with jTOP, some setup is required. To make results reproducable, ASLR has to be disabled, and the exploit generation script has to be updated with the proper base library address for your system. In a real attack, this information can be extracted using information leaks. Running the lxs script with everything configured correctly will lead to a call to 'system("/bin/sh")'.
+To generate a payload with iTOP, some setup is required. To make results reproducable, ASLR has to be disabled, and the exploit generation script has to be updated with the proper base library address for your system. In a real attack, this information can be extracted using information leaks. Running the lxs script with everything configured correctly will lead to a call to 'system("/bin/sh")'.
 
 1. disable aslr::
 
