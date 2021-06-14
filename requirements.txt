@@ -29,7 +29,7 @@ idna==2.7
 imagesize==1.1.0
 ipython==5.8.0
 ipython-genutils==0.2.0
-Jinja2==2.10
+Jinja2==2.11.3
 MarkupSafe==1.1.0
 monkeyhex==1.6
 mulpyplexer==0.8
