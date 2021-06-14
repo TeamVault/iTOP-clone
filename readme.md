@@ -1,5 +1,22 @@
-Installation
-============
+# About
+* This is the GitHub repository of the indirect transfer oriented programmig (iTOP) tool. This tool can be used for automated crafting of advanced code reuse attacks which can bypass state-of-the-art control flow integrity (CFI) policies.
+
+# Demo Videos
+
+* iTOP: exploit writing in ESL.
+[![pic1.png](https://i.postimg.cc/6pF2ZBmX/pic1.png)](https://tinyurl.com/y6cmbvyt)
+
+* iTOP: spawning a system shell exploit.
+[![pic1.png](https://i.postimg.cc/QMW6gxNk/pic2.png)](https://tinyurl.com/y6a9gk7c)
+
+* iTOP: spawning a system shell with no CFI policy used.
+[![pic1.png](https://i.postimg.cc/9QX0qrpK/pic3.png)](https://tinyurl.com/yyvxncqj)
+
+* iTOP: spawning a system shell with the VTint policy in-place.
+[![pic1.png](https://i.postimg.cc/FFPBQ66S/pic4.png)](https://tinyurl.com/yyrso75k)
+
+
+# Installation
 
 To run iTOP, you need a python2 or pypy environment with angr and antlr4-python2-runtime installed. We recommend creating a python virtual environment. The steps to set one up with the proper packages are outlined below.
 
@@ -17,8 +34,7 @@ To run iTOP, you need a python2 or pypy environment with angr and antlr4-python2
     export PYTHONPATH=.:$PYTHONPATH
 
 
-Running iTOP
-=================
+## Running iTOP
 
 To generate a payload with iTOP, some setup is required. To make results reproducable, ASLR has to be disabled, and the exploit generation script has to be updated with the proper base library address for your system. In a real attack, this information can be extracted using information leaks. Running the lxs script with everything configured correctly will lead to a call to 'system("/bin/sh")'.
 
