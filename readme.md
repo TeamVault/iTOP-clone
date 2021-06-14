@@ -1,5 +1,5 @@
 # About
-* This is the GitHub repository of the indirect transfer oriented programmig (iTOP) tool. This tool can be used for automated crafting of advanced code reuse attacks which can bypass state-of-the-art control flow integrity (CFI) policies.
+* This is the GitHub repository of the indirect transfer oriented programming (iTOP) tool. iTOP can be used for evaluating the potential for automated crafting of advanced code reuse attacks which can bypass state-of-the-art control flow integrity (CFI) policies.
 
 # Demo Videos
 
@@ -36,7 +36,7 @@ To run iTOP, you need a python2 or pypy environment with angr and antlr4-python2
 
 ## Running iTOP
 
-To generate a payload with iTOP, some setup is required. To make results reproducable, ASLR has to be disabled, and the exploit generation script has to be updated with the proper base library address for your system. In a real attack, this information can be extracted using information leaks. Running the lxs script with everything configured correctly will lead to a call to 'system("/bin/sh")'.
+To generate a payload with iTOP, some setup is required. To make results reproducible, ASLR has to be disabled, and the exploit generation script has to be updated with the proper base library address for your system. In a real attack, this information can be extracted using information leaks. Running the lxs script with everything configured correctly will lead to a call to 'system("/bin/sh")'.
 
 1. disable aslr::
 
