@@ -10,13 +10,13 @@ to be added
 [![pic1.png](https://i.postimg.cc/6pF2ZBmX/pic1.png)](https://tinyurl.com/y6cmbvyt)
 
 * iTOP: spawning a system shell exploit.
-[![pic1.png](https://i.postimg.cc/QMW6gxNk/pic2.png)](https://tinyurl.com/y6a9gk7c)
+[![pic2.png](https://i.postimg.cc/QMW6gxNk/pic2.png)](https://tinyurl.com/y6a9gk7c)
 
 * iTOP: spawning a system shell with no CFI policy used.
-[![pic1.png](https://i.postimg.cc/9QX0qrpK/pic3.png)](https://tinyurl.com/yyvxncqj)
+[![pic3.png](https://i.postimg.cc/9QX0qrpK/pic3.png)](https://tinyurl.com/yyvxncqj)
 
 * iTOP: spawning a system shell with the VTint policy in-place.
-[![pic1.png](https://i.postimg.cc/FFPBQ66S/pic4.png)](https://tinyurl.com/yyrso75k)
+[![pic4.png](https://i.postimg.cc/FFPBQ66S/pic4.png)](https://tinyurl.com/yyrso75k)
 
 
 ## Installation
