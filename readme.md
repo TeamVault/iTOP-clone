@@ -1,5 +1,5 @@
 # About
-* This is the GitHub repository of the indirect transfer oriented programming (iTOP) tool. iTOP can be used for evaluating the potential for automated crafting of advanced code reuse attacks which can bypass state-of-the-art control flow integrity (CFI) policies.
+* This is the GitHub repository of the indirect transfer oriented programming (iTOP) tool. iTOP can be used for evaluating the potential for automated crafting of advanced code reuse attacks which can bypass state-of-the-art control flow integrity (CFI) policies. The goal is learn how these defenses can be further improved.
 
 ## Publication
 to be added
@@ -19,7 +19,7 @@ to be added
 [![pic1.png](https://i.postimg.cc/FFPBQ66S/pic4.png)](https://tinyurl.com/yyrso75k)
 
 
-# Installation
+## Installation
 
 To run iTOP, you need a python2 or pypy environment with angr and antlr4-python2-runtime installed. We recommend creating a python virtual environment. The steps to set one up with the proper packages are outlined below.
 
