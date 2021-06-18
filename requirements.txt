@@ -46,7 +46,7 @@ prompt-toolkit==1.0.15
 ptyprocess==0.6.0
 pycparser==2.18
 pyelftools==0.25
-Pygments==2.2.0
+Pygments==2.7.4
 pyparsing==2.3.0
 pytz==2018.7
 pyvex==7.8.9.26
