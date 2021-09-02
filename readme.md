@@ -2,7 +2,13 @@
 * This is the GitHub repository of the indirect transfer oriented programming (iTOP) tool. iTOP can be used for evaluating the potential for automated crafting of advanced code reuse attacks which can bypass state-of-the-art control flow integrity (CFI) policies. The goal is learn how these defenses can be further improved.
 
 ## Publication
-to be added
+RAID 2021 publication:
+
+https://camps.aptaracorp.com/AuthorDashboard/dashboard.html?key=0&val=1827bb0e-d8d7-11eb-8d84-166a08e17233#
+
+or
+
+https://scholar.google.com/citations?view_op=view_citation&hl=en&user=goiWh_gAAAAJ&sortby=pubdate&citation_for_view=goiWh_gAAAAJ:fQNAKQ3IYiAC
 
 ## Demo Videos
 
