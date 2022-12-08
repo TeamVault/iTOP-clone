@@ -9,7 +9,7 @@ backports.shutil-get-terminal-size==1.0.0
 bitstring==3.1.5
 cachetools==2.1.0
 capstone==3.0.5
-certifi==2018.10.15
+certifi==2022.12.7
 cffi==1.6.0
 chardet==3.0.4
 claripy==7.8.9.26
